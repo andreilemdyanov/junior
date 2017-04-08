@@ -41,14 +41,10 @@ public class Point {
 *Метод, проверяющий принадлежность функции.
 *@param a первое число.
 *@param b второе число.
-*@return result возвращает true, если точка находится на функции
+*@return возвращает true, если точка находится на функции
 *иначе возвращает false.
 */
 	public boolean is(int a, int b) {
-		boolean result = false;
-		if (a == (y - b) / x) {
-			result = true;
-		}
-		return result;
+		return y == a * x + b;
 	}
 }
