@@ -22,16 +22,11 @@ public class Triangle {
 *@param a первая точка
 *@param b вторая точка
 *@param c третья точка
-*Если все точки находятся на одной прямой, то построить треугольник нельзя
 */
 	public Triangle(Point a, Point b, Point c) {
-		if ((a.is(b.getX(), b.getY())) & (a.is(c.getX(), c.getY()))) {
-		System.out.println("Not exist triangle");
-		} else {
 		this.a = a;
 		this.b = b;
 		this.c = c;
-		}
 	}
 /**
 *Метод для подсчета площади треугольника.
