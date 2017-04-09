@@ -32,4 +32,14 @@ public class MaxTest {
 		int expected = 4;
 		assertThat(maximum, is(expected));
 	}
+/**
+*Сравнение трех чисел когда первое больше.
+*/
+@Test
+	public void whenFirstMoreSecondAndThirdThenFirst() {
+		Max number = new Max();
+		int maximum = number.max(7, 3, 5);
+		int expected = 7;
+		assertThat(maximum, is(expected));
+	}
 }
