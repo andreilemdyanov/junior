@@ -36,10 +36,9 @@ public class Paint {
             }
             n--;
             k++;
-			if (i == h) {
-				continue;
+			if (i != h) {
+				str.append(System.getProperty("line.separator"));
 			}
-            str.append(System.getProperty("line.separator"));
         }
         return str.toString();
 
