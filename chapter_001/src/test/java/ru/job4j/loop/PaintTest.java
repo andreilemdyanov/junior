@@ -13,13 +13,17 @@ import static org.junit.Assert.assertThat;
 */
 public class PaintTest {
 /**
+*Поле line для перехода на следующую строку.
+*/
+	private final String line = System.getProperty("line.separator");
+/**
 *Метод для отрисовки пирамиды высотой 2.
 */
 @Test
 public void whenPiramidWithHeightTwoThenStringWithTwoRows() {
         Paint paint = new Paint();
         String result = paint.piramid(2);
-        String expected = String.format(" ^ %s^^^", System.getProperty("line.separator"));
+        String expected = String.format(" ^ %s^^^", line);
         assertThat(result, is(expected));
     }
 /**
@@ -29,7 +33,7 @@ public void whenPiramidWithHeightTwoThenStringWithTwoRows() {
  public void whenPiramidWithHeightThreeThenStringWithThreeRows() {
 		Paint paint = new Paint();
         String result = paint.piramid(3);
-        String expected = String.format("  ^  %s ^^^ %s^^^^^", System.getProperty("line.separator"), System.getProperty("line.separator"));
+        String expected = String.format("  ^  %s ^^^ %s^^^^^", line, line);
         assertThat(result, is(expected));
 }
 }
