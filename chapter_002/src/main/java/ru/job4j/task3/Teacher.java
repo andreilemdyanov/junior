@@ -31,13 +31,13 @@ public class Teacher extends Profession {
 	*@return строку о том что учитель учит учеников.
 	*/
 	public String teach() {
-		return this.name + " учит учеников";
+		return String.format("%s%s", this.name, " учит учеников");
 	}
 	/**
 	*Метод спросить.
 	*@return строку о том что учитель задает вопрос.
 	*/
 	public String ask() {
-		return this.name + " задает вопрос";
+		return String.format("%s%s", this.name, " задает вопрос");
 	}
 }
