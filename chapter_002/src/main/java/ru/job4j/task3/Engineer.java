@@ -24,20 +24,20 @@ public class Engineer extends Profession {
 	*@return строку о том что инженер рисует чертеж.
 	*/
 	public String draw() {
-		return String.format("%s%s", this.name, " рисует чертеж");
+		return String.format("%s рисует чертеж", this.name);
 	}
 	/**
 	*Метод изобретать.
 	*@return строку о том что инженер изобретает.
 	*/
 	public String invent() {
-		return String.format("%s%s", this.name, " изобретает что-то новое");
+		return String.format("%s изобретает что-то новое", this.name);
 	}
 	/**
 	*Метод проектировать.
 	*@return строку о том что инженер проектирует.
 	*/
 	public String design() {
-		return String.format("%s%s", this.name, " проектирует");
+		return String.format("%s проектирует", this.name);
 	}
 }

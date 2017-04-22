@@ -25,20 +25,20 @@ public class Doctor extends Profession {
 	*@return строку о том что доктор лечит пациента.
 	*/
 	public String heal(Pacient pacient) {
-		return String.format("%s%s%s", this.name, " лечит ", pacient.getName());
+		return String.format("%s лечит %s", this.name, pacient.getName());
 	}
 	/**
 	*Метод выписать рецепт.
 	*@return рецепт.
 	*/
 	public String writingTheRecipe() {
-		return String.format("%s", "Вот Ваш рецепт...");
+		return "Вот Ваш рецепт...";
 	}
 	/**
 	*Метод поставить диагноз.
 	*@return диагноз.
 	*/
 	public String toDiagnose() {
-		return String.format("%s", "Ваш диагноз...");
+		return "Ваш диагноз...";
 	}
 }
