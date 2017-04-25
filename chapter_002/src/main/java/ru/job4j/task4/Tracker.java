@@ -49,11 +49,13 @@ public class Tracker {
 	*@param item элемент который надо удалить.
 	*/
 	public void delete(Item item) {
+		int position = 0;
 		for (int i = 0; i < this.position; i++) {
-			if (this.items[i].getId().equals(item.getId())) {
-				this.items[i] = null;
+			if (item.getId().equals(this.items[i].getId())) {
+				System.arraycopy(this.items, position + 1, this.items, position, position);
 				break;
 			}
+			position++;
 		}
 	}
 	/**
@@ -68,7 +70,7 @@ public class Tracker {
 				copy[index++] = item;
 			}
 		}
-		return copy;
+		return Arrays.copyOf(copy, index);
 	}
 	/**
 	*Метод ищет элемент по имени.
@@ -80,7 +82,7 @@ public class Tracker {
 		int index = 0;
 		for (Item item : this.items) {
 			if (item == null) {
-				break;
+				continue;
 			}
 			if (key.equals(item.getName())) {
 				result[index++] = item;
@@ -96,10 +98,10 @@ public class Tracker {
 	public Item findById(String id) {
 		Item result = null;
 		for (Item item : this.items) {
-			if (item.getId().equals(id)) {
-				result = item;
-				break;
-			}
+				if (item != null && item.getId().equals(id)) {
+					result = item;
+					break;
+				}
 		}
 		return result;
 	}
@@ -115,10 +117,6 @@ public class Tracker {
 	*@return result копия.
 	*/
 	public Item[] getAll() {
-		Item[] result = new Item[this.position];
-		for (int index = 0; index != this.position; index++) {
-			result[index] = this.items[index];
-		}
-		return result;
+		return this.items;
 	}
 }

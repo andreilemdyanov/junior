@@ -45,8 +45,9 @@ public class TrackerTest {
 		tracker.add(item);
 		tracker.add(item2);
 		tracker.delete(item2);
-		Item[] expectArray = new Item[] {item, null};
-		assertThat(tracker.getAll(), is(expectArray));
+		Item[] result = tracker.findAll();
+		Item[] expectArray = new Item[] {item};
+		assertThat(result, is(expectArray));
 	}
 	/**
 	*Метод для проверки получения списка всех заявок.
