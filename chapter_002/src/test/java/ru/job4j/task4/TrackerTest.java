@@ -42,11 +42,13 @@ public class TrackerTest {
 		Tracker tracker = new Tracker();
 		Item item = new Item("test1", "testDescription", 123L);
 		Item item2 = new Item("test2", "testDelete", 222L);
+		Item item3 = new Item("test3", "test", 255L);
 		tracker.add(item);
 		tracker.add(item2);
+		tracker.add(item3);
 		tracker.delete(item2);
 		Item[] result = tracker.findAll();
-		Item[] expectArray = new Item[] {item};
+		Item[] expectArray = new Item[] {item, item3};
 		assertThat(result, is(expectArray));
 	}
 	/**

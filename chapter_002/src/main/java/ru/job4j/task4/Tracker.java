@@ -49,15 +49,19 @@ public class Tracker {
 	*@param item элемент который надо удалить.
 	*/
 	public void delete(Item item) {
-		int position = 0;
-		for (int i = 0; i < this.position; i++) {
-			if (item.getId().equals(this.items[i].getId())) {
-				System.arraycopy(this.items, position + 1, this.items, position, position);
-				break;
-			}
-			position++;
-		}
-	}
+        for (int i = 0; i < this.position; i++) {
+            if (i == position - 1) {
+                this.items[i] = null;
+                break;
+            }
+            if (item.getId().equals(this.items[i].getId())) {
+                System.arraycopy(this.items, i + 1, this.items, i, position - i);
+                this.items[position--] = null;
+                break;
+            }
+
+        }
+    }
 	/**
 	*Метод возвращает копию массива без null элементов.
 	*@return copy обработанный массив.
