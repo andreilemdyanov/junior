@@ -21,10 +21,11 @@ public class StartUI {
 	/**
 	*Конструктор.
 	*@param input входящий параметр.
+	*@param tracker входящий параметр.
 	*/
-	public StartUI(Input input) {
+	public StartUI(Input input, Tracker tracker) {
 		this.input = input;
-		tracker = new Tracker();
+		this.tracker = tracker;
 	}
 	/**
 	*Метод с операциями.
@@ -73,7 +74,7 @@ public class StartUI {
 				System.out.print("Bye bye");
 				flag = false;
 			} else {
-				System.out.print("Please, retry...\n\n");
+				System.out.print(String.format("Please, retry...%s%<s", System.getProperty("line.separator")));
 			}
 			}
 	}
@@ -83,7 +84,8 @@ public class StartUI {
 	*/
 	public static void main(String[] args) {
 		Input input = new ConsoleInput();
-		new StartUI(input).init();
+		Tracker tracker = new Tracker();
+		new StartUI(input, tracker).init();
 	}
 	/**
 	*Перечисление.
