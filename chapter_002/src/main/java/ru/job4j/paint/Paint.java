@@ -22,8 +22,4 @@ public class Paint {
         System.out.print(shape.pic());
     }
 
-    public static void main(String[] args) {
-        new Paint().draw(new Square());
-    }
-
 }
