@@ -43,7 +43,7 @@ public class Tracker {
      */
     public void update(Item item) {
         for (int i = 0; i < this.position; i++) {
-            if (this.items[i].getId().equals(item.getId())) {
+            if (this.items[i] != null && this.items[i].getId().equals(item.getId())) {
                 this.items[i] = item;
                 break;
             }
