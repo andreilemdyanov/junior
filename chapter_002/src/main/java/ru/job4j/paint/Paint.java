@@ -10,7 +10,7 @@ public class Paint {
     /**
      * Ссылочная переменная типа Shape.
      */
-    Shape shape;
+    private Shape shape;
 
     /**
      * Метод рисует форму.

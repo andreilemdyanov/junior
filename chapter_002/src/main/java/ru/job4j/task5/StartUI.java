@@ -1,6 +1,7 @@
 package ru.job4j.task5;
 
-import ru.job4j.task4.*;
+
+import ru.job4j.task4.Tracker;
 
 /**
  * Class StartUI.
@@ -17,6 +18,8 @@ public class StartUI {
      * Поле класса Tracker.
      */
     private Tracker tracker;
+
+    private int[] ranges = new int[]{0, 1, 2, 3, 4, 5, 6};
 
     /**
      * Конструктор.
@@ -37,8 +40,7 @@ public class StartUI {
         menu.fillActions();
         do {
             menu.show();
-            String key = input.ask("Select: ");
-            menu.select(key);
+            menu.select(input.ask("Select: ", ranges));
 
         } while (MenuTracker.exit);
 
@@ -50,7 +52,7 @@ public class StartUI {
      * @param args массив строк.
      */
     public static void main(String[] args) {
-        Input input = new ConsoleInput();
+        Input input = new ValidateInput();
         Tracker tracker = new Tracker();
         new StartUI(input, tracker).init();
     }

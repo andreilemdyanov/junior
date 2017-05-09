@@ -14,4 +14,13 @@ public interface Input {
      * @return ответ.
      */
     String ask(String question);
+
+    /**
+     * Перегрузка метода ask.
+     *
+     * @param question
+     * @param range
+     * @return value
+     */
+    int ask(String question, int[] range);
 }
