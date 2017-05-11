@@ -18,7 +18,9 @@ public class StartUI {
      * Поле класса Tracker.
      */
     private Tracker tracker;
-
+    /**
+     * Массив вариантов.
+     */
     private int[] ranges = new int[]{0, 1, 2, 3, 4, 5, 6};
 
     /**
@@ -42,7 +44,7 @@ public class StartUI {
             menu.show();
             menu.select(input.ask("Select: ", ranges));
 
-        } while (MenuTracker.exit);
+        } while (menu.exit);
 
     }
 

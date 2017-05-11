@@ -65,9 +65,9 @@ public class MenuTracker {
      */
     private UserAction[] actions = new UserAction[7];
     /**
-     * Поле exit.
+     * Поле для выхода.
      */
-    public static boolean exit = true;
+    public boolean exit = true;
 
     /**
      * Конструктор.
@@ -90,7 +90,7 @@ public class MenuTracker {
         this.actions[3] = new DeleteItem();
         this.actions[4] = new FindItemById();
         this.actions[5] = new FindItemByName();
-        this.actions[6] = new MenuTracker.Exit();
+        this.actions[6] = new Exit();
     }
 
     /**
@@ -168,7 +168,7 @@ public class MenuTracker {
         }
 
         /**
-         * Меод выводит все заявки на экран.
+         * Метод выводит все заявки на экран.
          *
          * @param input
          * @param tracker
@@ -195,7 +195,7 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private static class Exit implements UserAction {
+    public class Exit implements UserAction {
         /**
          * Метод key.
          *
@@ -212,7 +212,7 @@ public class MenuTracker {
          * @param tracker
          */
         public void execute(Input input, Tracker tracker) {
-            MenuTracker.exit = false;
+            exit = false;
         }
 
         /**
