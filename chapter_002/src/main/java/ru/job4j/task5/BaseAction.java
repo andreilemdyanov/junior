@@ -19,8 +19,9 @@ public abstract class BaseAction implements UserAction {
 
     /**
      * Конструктор.
+     *
      * @param name имя.
-     * @param key ключ.
+     * @param key  ключ.
      */
     public BaseAction(String name, int key) {
         this.name = name;
@@ -29,6 +30,7 @@ public abstract class BaseAction implements UserAction {
 
     /**
      * Метод выводит строку меню.
+     *
      * @return строка.
      */
     public String info() {
