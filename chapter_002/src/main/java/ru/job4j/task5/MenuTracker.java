@@ -10,14 +10,12 @@ import ru.job4j.task4.Tracker;
  * @author Andrey Lemdyanov
  * @since 04.05.2017
  */
-class EditItem implements UserAction {
+class EditItem extends BaseAction {
     /**
-     * Метод key.
-     *
-     * @return 2
+     * Конструктор.
      */
-    public int key() {
-        return 2;
+    public EditItem() {
+        super("Edit item", 2);
     }
 
     /**
@@ -35,14 +33,6 @@ class EditItem implements UserAction {
         tracker.update(task);
     }
 
-    /**
-     * Метод выводит информацию.
-     *
-     * @return строка.
-     */
-    public String info() {
-        return String.format("%s. %s", this.key(), "Edit item");
-    }
 }
 
 /**
@@ -68,6 +58,10 @@ public class MenuTracker {
      * Поле для выхода.
      */
     public boolean exit = true;
+    /**
+     * Позиция в массиве.
+     */
+    public int position = 0;
 
     /**
      * Конструктор.
@@ -84,13 +78,13 @@ public class MenuTracker {
      * Метод инициализирует массив.
      */
     public void fillActions() {
-        this.actions[0] = this.new AddItem();
-        this.actions[1] = new MenuTracker.ShowItems();
-        this.actions[2] = new EditItem();
-        this.actions[3] = new DeleteItem();
-        this.actions[4] = new FindItemById();
-        this.actions[5] = new FindItemByName();
-        this.actions[6] = new Exit();
+        this.actions[position++] = this.new AddItem();
+        this.actions[position++] = new MenuTracker.ShowItems();
+        this.actions[position++] = new EditItem();
+        this.actions[position++] = new DeleteItem();
+        this.actions[position++] = new FindItemById();
+        this.actions[position++] = new FindItemByName();
+        this.actions[position++] = new Exit();
     }
 
     /**
@@ -119,14 +113,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private class AddItem implements UserAction {
+    private class AddItem extends BaseAction {
         /**
-         * Метод key.
-         *
-         * @return 0.
+         * Конструктор.
          */
-        public int key() {
-            return 0;
+        public AddItem() {
+            super("Add new item", 0);
         }
 
         /**
@@ -141,14 +133,6 @@ public class MenuTracker {
             tracker.add(new Task(name, desc, System.currentTimeMillis()));
         }
 
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Add new item");
-        }
     }
 
     /**
@@ -157,14 +141,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private static class ShowItems implements UserAction {
+    private static class ShowItems extends BaseAction {
         /**
-         * Метод key.
-         *
-         * @return 1.
+         * Конструктор.
          */
-        public int key() {
-            return 1;
+        public ShowItems() {
+            super("Show all items", 1);
         }
 
         /**
@@ -179,14 +161,6 @@ public class MenuTracker {
             }
         }
 
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Show all items");
-        }
     }
 
     /**
@@ -195,14 +169,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    public class Exit implements UserAction {
+    public class Exit extends BaseAction {
         /**
-         * Метод key.
-         *
-         * @return 6.
+         * Конструктор.
          */
-        public int key() {
-            return 6;
+        public Exit() {
+            super("Exit Program", 6);
         }
 
         /**
@@ -215,14 +187,6 @@ public class MenuTracker {
             exit = false;
         }
 
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Exit Program");
-        }
     }
 
     /**
@@ -231,14 +195,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private class DeleteItem implements UserAction {
+    private class DeleteItem extends BaseAction {
         /**
-         * Метод key.
-         *
-         * @return 3.
+         * Конструктор.
          */
-        public int key() {
-            return 3;
+        public DeleteItem() {
+            super("Delete item", 3);
         }
 
         /**
@@ -255,14 +217,6 @@ public class MenuTracker {
 
         }
 
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Delete item");
-        }
     }
 
     /**
@@ -271,14 +225,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private class FindItemById implements UserAction {
+    private class FindItemById extends BaseAction {
         /**
-         * Метод key.
          *
-         * @return 4.
          */
-        public int key() {
-            return 4;
+        public FindItemById() {
+            super("Find item by id", 4);
         }
 
         /**
@@ -293,14 +245,6 @@ public class MenuTracker {
             System.out.println(item.getName() + " " + item.getDesc() + " " + item.getCreate());
         }
 
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find item by id");
-        }
     }
 
     /**
@@ -309,14 +253,12 @@ public class MenuTracker {
      * @author Andrey Lemdyanov
      * @since 04.05.2017
      */
-    private class FindItemByName implements UserAction {
+    private class FindItemByName extends BaseAction {
         /**
-         * Метод key.
          *
-         * @return 5.
          */
-        public int key() {
-            return 5;
+        public FindItemByName() {
+            super("Find items by name", 5);
         }
 
         /**
@@ -331,15 +273,6 @@ public class MenuTracker {
             for (Item item : items) {
                 System.out.println(item.getName() + " " + item.getDesc() + " " + item.getCreate());
             }
-        }
-
-        /**
-         * Метод выводит строку меню.
-         *
-         * @return строка.
-         */
-        public String info() {
-            return String.format("%s. %s", this.key(), "Find items by name");
         }
     }
 }
