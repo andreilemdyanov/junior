@@ -16,14 +16,11 @@ public class Bishop extends Figure {
                 do {
                     if (dist.getX() > this.position.getX() && dist.getY() > this.position.getY()) {
                         path[count++] = new Cell(x++, y++);
-                    }
-                    if (dist.getX() < this.position.getX() && dist.getY() < this.position.getY()) {
+                    } else if (dist.getX() < this.position.getX() && dist.getY() < this.position.getY()) {
                         path[count++] = new Cell(x--, y--);
-                    }
-                    if (dist.getX() > this.position.getX() && dist.getY() < this.position.getY()) {
+                    } else if (dist.getX() > this.position.getX() && dist.getY() < this.position.getY()) {
                         path[count++] = new Cell(x++, y--);
-                    }
-                    if (dist.getX() < this.position.getX() && dist.getY() > this.position.getY()) {
+                    } else if (dist.getX() < this.position.getX() && dist.getY() > this.position.getY()) {
                         path[count++] = new Cell(x--, y++);
                     }
                 } while (x != dist.getX() && y != dist.getY());
