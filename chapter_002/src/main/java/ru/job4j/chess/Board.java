@@ -1,12 +1,32 @@
 package ru.job4j.chess;
 
+/**
+ * Class Board.
+ *
+ * @author Andrey Lemdyanov
+ * @since 16.05.2017
+ */
 public class Board {
+    /**
+     * Массив фигур.
+     */
     Figure[] figures;
 
+    /**
+     * Конструктор.
+     *
+     * @param f массив фигур
+     */
     public Board(Figure[] f) {
         this.figures = f;
     }
 
+    /**
+     * Метод для нахождения фигуры в массиве.
+     *
+     * @param cell клетка.
+     * @return фигура
+     */
     public Figure findByCell(Cell cell) {
         Figure f = null;
         for (Figure figure : figures) {
@@ -17,6 +37,16 @@ public class Board {
         return f;
     }
 
+    /**
+     * Метод для хождения фигуры.
+     *
+     * @param source начальная точка пути
+     * @param dist   конечная точка пути
+     * @return сделан ли ход
+     * @throws ImpossibleMoveException если фигура так не ходит
+     * @throws OccupiedWayException    если путь занят другой фигурой
+     * @throws FigureNotFoundException если фигура не найдена
+     */
     boolean move(Cell source, Cell dist) throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
         Figure need;
         Figure figure = this.findByCell(source);
@@ -38,12 +68,5 @@ public class Board {
             System.out.println(need.getPosition().getX() + " " + need.getPosition().getY());
         }
         return true;
-    }
-
-    public static void main(String[] args) {
-        Figure[] f = new Figure[]{new Bishop(2, 0), new Bishop(5, 3)};
-        Board board = new Board(f);
-        board.move(new Cell(5, 3), new Cell(3, 1));
-
     }
 }

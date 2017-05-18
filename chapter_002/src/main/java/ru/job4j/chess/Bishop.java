@@ -1,11 +1,29 @@
 package ru.job4j.chess;
 
+/**
+ * Class Byshop.
+ *
+ * @author Andrey Lemdyanov
+ * @since 16.05.2017
+ */
 public class Bishop extends Figure {
-
+    /**
+     * Конструктор.
+     *
+     * @param x координата
+     * @param y координата
+     */
     public Bishop(int x, int y) {
         super(new Cell(x, y));
     }
 
+    /**
+     * Метод вычисляет путь.
+     *
+     * @param dist конечная точка
+     * @return массив координат(шаги)
+     * @throws ImpossibleMoveException если ход не возможен
+     */
     public Cell[] way(Cell dist) throws ImpossibleMoveException {
         Cell[] path = new Cell[8];
         int count = 0;
@@ -38,6 +56,12 @@ public class Bishop extends Figure {
 
     }
 
+    /**
+     * Метод создает новый объект на заданной клетке.
+     *
+     * @param dist клетка
+     * @return объект
+     */
     public Figure clone(Cell dist) {
         return new Bishop(dist.getX(), dist.getY());
     }
