@@ -1,8 +1,9 @@
-package ru.job4j.collections;
+package ru.job4j.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 /**
  * Class CollectionTest.
@@ -73,7 +74,7 @@ public class CollectionTest {
         System.out.println(String.format("Время удаления LinkedList : %d ", delete));
 
         CollectionTest test3 = new CollectionTest();
-        LinkedList<String> tlist = new LinkedList<>();
+        TreeSet<String> tlist = new TreeSet<>();
         result = test3.add(tlist, "Строка", 1000000);
         System.out.println(String.format("Время вставки TreeSet : %d", result));
         delete = test3.delete(tlist, 45000);
