@@ -1,9 +1,6 @@
 package ru.job4j.collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * Class CollectionTest.
@@ -46,8 +43,12 @@ public class CollectionTest {
      */
     public long delete(Collection<String> collection, int amount) {
         long before = System.currentTimeMillis();
-        for (int i = 0; i < amount; i++) {
-            collection.remove("Строка" + i);
+        Iterator<String> iter = collection.iterator();
+        int i = 0;
+        while (i < amount) {
+            iter.next();
+            iter.remove();
+            i++;
         }
         long after = System.currentTimeMillis();
         return after - before;
