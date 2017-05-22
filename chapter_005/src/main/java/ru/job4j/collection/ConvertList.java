@@ -73,6 +73,21 @@ public class ConvertList {
     }
 
     /**
+     * Метод для конвертации листа массивов в один лист Integer.
+     * @param list лист массивов.
+     * @return лист.
+     */
+    public List<Integer> convert (List<int[]> list) {
+        List<Integer> res = new ArrayList<>();
+        for (int[] mas : list) {
+            for (int num : mas) {
+                res.add(num);
+            }
+        }
+        return res;
+    }
+
+    /**
      * Точка входа.
      *
      * @param args массив строк.
@@ -84,6 +99,12 @@ public class ConvertList {
         System.out.println(list);
         int[][] mas = conlist.toArray(list, 7);
         System.out.println(Arrays.deepToString(mas));
-
+        ConvertList second = new ConvertList(new ArrayList<>());
+        List<int[]> slist = new ArrayList<>();
+        slist.add(new int[]{1, 2});
+        slist.add(new int[]{3, 4, 5, 6});
+        slist.add(new int[]{7, 8, 9, 10, 11, 12});
+        List<Integer> result = second.convert(slist);
+        System.out.println(result);
     }
 }
