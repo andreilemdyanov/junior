@@ -45,7 +45,7 @@ public class CollectionTest {
         long before = System.currentTimeMillis();
         Iterator<String> iter = collection.iterator();
         int i = 0;
-        while (i < amount) {
+        while (i < amount & iter.hasNext()) {
             iter.next();
             iter.remove();
             i++;
