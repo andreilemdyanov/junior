@@ -4,6 +4,8 @@ import ru.job4j.task4.Item;
 import ru.job4j.task4.Task;
 import ru.job4j.task4.Tracker;
 
+import java.util.ArrayList;
+
 /**
  * Class EditItem.
  *
@@ -53,7 +55,7 @@ public class MenuTracker {
     /**
      * Массив вариантов выбора.
      */
-    private UserAction[] actions = new UserAction[7];
+    private ArrayList<UserAction> actions = new ArrayList<>();
     /**
      * Поле для выхода.
      */
@@ -78,13 +80,13 @@ public class MenuTracker {
      * Метод инициализирует массив.
      */
     public void fillActions() {
-        this.actions[position++] = this.new AddItem();
-        this.actions[position++] = new MenuTracker.ShowItems();
-        this.actions[position++] = new EditItem();
-        this.actions[position++] = new DeleteItem();
-        this.actions[position++] = new FindItemById();
-        this.actions[position++] = new FindItemByName();
-        this.actions[position++] = new Exit();
+        this.actions.add(this.new AddItem());
+        this.actions.add(new MenuTracker.ShowItems());
+        this.actions.add(new EditItem());
+        this.actions.add(new DeleteItem());
+        this.actions.add(new FindItemById());
+        this.actions.add(new FindItemByName());
+        this.actions.add(new Exit());
     }
 
     /**
@@ -93,7 +95,7 @@ public class MenuTracker {
      * @param key
      */
     public void select(int key) {
-        this.actions[key].execute(this.input, this.tracker);
+        this.actions.get(key).execute(this.input, this.tracker);
     }
 
     /**
@@ -101,9 +103,7 @@ public class MenuTracker {
      */
     public void show() {
         for (UserAction action : this.actions) {
-            if (action != null) {
                 System.out.println(action.info());
-            }
         }
     }
 
@@ -269,7 +269,7 @@ public class MenuTracker {
          */
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Please, enter name for search: ");
-            Item[] items = tracker.findByName(id);
+            ArrayList<Item> items = tracker.findByName(id);
             for (Item item : items) {
                 System.out.println(item.getName() + " " + item.getDesc() + " " + item.getCreate());
             }

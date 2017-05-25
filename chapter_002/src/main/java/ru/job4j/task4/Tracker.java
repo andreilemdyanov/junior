@@ -1,7 +1,7 @@
 package ru.job4j.task4;
 
+import java.util.ArrayList;
 import java.util.Random;
-import java.util.Arrays;
 
 /**
  * Class Tracker.
@@ -12,27 +12,23 @@ import java.util.Arrays;
 
 public class Tracker {
     /**
-     * Объявляем массив типа Item.
+     * Объявляем список типа Item.
      */
-    private Item[] items = new Item[100];
-    /**
-     * Переменная счетчик.
-     */
-    private int position = 0;
+    private ArrayList<Item> items = new ArrayList<>();
     /**
      * Случайное число.
      */
     private static final Random RN = new Random();
 
     /**
-     * Метод добавления элемента в массив.
+     * Метод добавления элемента в список.
      *
      * @param item элемент для добавления.
      * @return item добавленный элемент.
      */
     public Item add(Item item) {
         item.setId(this.generateId());
-        this.items[this.position++] = item;
+        items.add(item);
         return item;
     }
 
@@ -42,11 +38,12 @@ public class Tracker {
      * @param item заменяющий элемент.
      */
     public void update(Item item) {
-        for (int i = 0; i < this.position; i++) {
-            if (this.items[i] != null && this.items[i].getId().equals(item.getId())) {
-                this.items[i] = item;
-                break;
+        int count = 0;
+        for (Item i : items) {
+            if(i.getId().equals(item.getId())) {
+                items.set(count, item);
             }
+            count++;
         }
     }
 
@@ -56,54 +53,35 @@ public class Tracker {
      * @param item элемент который надо удалить.
      */
     public void delete(Item item) {
-        for (int i = 0; i < this.position; i++) {
-            if (i == position - 1) {
-                this.items[i] = null;
-                break;
-            }
-            if (item.getId().equals(this.items[i].getId())) {
-                System.arraycopy(this.items, i + 1, this.items, i, position - i);
-                this.items[position--] = null;
-                break;
-            }
+        items.remove(item);
 
-        }
     }
 
     /**
-     * Метод возвращает копию массива без null элементов.
+     * Метод возвращает копию списка без null элементов.
      *
-     * @return copy обработанный массив.
+     * @return обработанный список.
      */
-    public Item[] findAll() {
-        Item[] copy = new Item[this.position];
-        int index = 0;
-        for (Item item : this.items) {
-            if (item != null) {
-                copy[index++] = item;
-            }
-        }
-        return Arrays.copyOf(copy, index);
+    public ArrayList<Item> findAll() {
+        items.trimToSize();
+        return items;
     }
 
     /**
      * Метод ищет элемент по имени.
      *
      * @param key имя элемента для поиска.
-     * @return result возвращает массив с совпадающими именами.
+     * @return result возвращает список с совпадающими именами.
      */
-    public Item[] findByName(String key) {
-        Item[] result = new Item[this.position];
-        int index = 0;
-        for (Item item : this.items) {
-            if (item == null) {
-                continue;
-            }
+    public ArrayList<Item> findByName(String key) {
+        ArrayList<Item> result = new ArrayList<>();
+        for (Item item : items) {
+
             if (key.equals(item.getName())) {
-                result[index++] = item;
+                result.add(item);
             }
         }
-        return Arrays.copyOf(result, index);
+        return result;
     }
 
     /**
@@ -114,8 +92,8 @@ public class Tracker {
      */
     public Item findById(String id) {
         Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
+        for (Item item : items) {
+            if (item.getId().equals(id)) {
                 result = item;
                 break;
             }
@@ -133,11 +111,11 @@ public class Tracker {
     }
 
     /**
-     * Метод возвращает копию массива.
+     * Метод возвращает копию списка.
      *
-     * @return result копия.
+     * @return копия.
      */
-    public Item[] getAll() {
-        return this.items;
+    public ArrayList<Item> getAll() {
+        return items;
     }
 }
