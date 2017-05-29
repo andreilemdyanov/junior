@@ -15,7 +15,7 @@ public class User implements Comparable<User> {
     /**
      * Поле возраст.
      */
-    private int age;
+    private Integer age;
 
     /**
      * Конструктор.
@@ -23,7 +23,7 @@ public class User implements Comparable<User> {
      * @param name имя.
      * @param age  возраст.
      */
-    public User(String name, int age) {
+    public User(String name, Integer age) {
         this.name = name;
         this.age = age;
     }
@@ -33,7 +33,7 @@ public class User implements Comparable<User> {
      *
      * @return возраст.
      */
-    public int getAge() {
+    public Integer getAge() {
         return age;
     }
 
@@ -54,15 +54,7 @@ public class User implements Comparable<User> {
      */
     @Override
     public int compareTo(User user) {
-        int result = 0;
-        if (this.getAge() == user.getAge()) {
-            result = this.getName().compareTo(user.getName());
-        } else if (this.getAge() < user.getAge()) {
-            result = -1;
-        } else if (this.getAge() > user.getAge()) {
-            result = 1;
-        }
-        return result;
+        return this.getAge().compareTo(user.getAge());
     }
 
     /**
@@ -103,5 +95,21 @@ public class User implements Comparable<User> {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + age;
         return result;
+    }
+
+    /**
+     * Геттер для хэшкода.
+     * @return хэш.
+     */
+    public Integer getHash() {
+        return this.hashCode();
+    }
+
+    /**
+     * Геттер для длины имени.
+     * @return длина.
+     */
+    public Integer getLength() {
+        return this.getName().length();
     }
 }

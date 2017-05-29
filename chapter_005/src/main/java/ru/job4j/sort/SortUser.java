@@ -31,18 +31,8 @@ public class SortUser {
      * @return отсортированный список.
      */
     public List<User> sortHash(List<User> users) {
-        users.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                int result = 0;
-                if (o1.hashCode() < o2.hashCode()) {
-                    result = -1;
-                } else if (o1.hashCode() > o2.hashCode()) {
-                    result = 1;
-                }
-                return result;
-            }
-        });
+        users.sort((o1, o2) ->
+                o1.getHash().compareTo(o2.getHash()));
         return users;
     }
 
@@ -53,19 +43,14 @@ public class SortUser {
      * @return отсортированный список.
      */
     public List<User> sortLength(List<User> users) {
-        users.sort(new Comparator<User>() {
-            @Override
-            public int compare(User o1, User o2) {
-                int result = 0;
-                if (o1.getName().length() == o2.getName().length()) {
-                    result = o1.getName().compareTo(o2.getName());
-                } else if (o1.getName().length() < o2.getName().length()) {
-                    result = -1;
-                } else if (o1.getName().length() > o2.getName().length()) {
-                    result = 1;
-                }
-                return result;
+        users.sort((o1, o2) -> {
+            int result;
+            if (o1.getLength().compareTo(o2.getLength()) == 0) {
+                result = o1.getName().compareTo(o2.getName());
+            } else {
+                result = o1.getLength().compareTo(o2.getLength());
             }
+            return result;
         });
         return users;
     }
