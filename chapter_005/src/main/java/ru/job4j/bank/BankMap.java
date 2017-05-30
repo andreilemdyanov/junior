@@ -40,11 +40,9 @@ public class BankMap {
      * @param user пользователь.
      */
     public void deleteUser(User user) {
-        Iterator<User> iter = map.keySet().iterator();
-        while (iter.hasNext()) {
-            User each = iter.next();
-            if (each.equals(user)) {
-                iter.remove();
+        for(User us : map.keySet()) {
+            if (us.equals(user)) {
+                map.remove(us);
             }
         }
     }
