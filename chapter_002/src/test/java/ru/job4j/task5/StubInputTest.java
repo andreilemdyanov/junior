@@ -1,14 +1,13 @@
-package ru.job4j.task5;
+ package ru.job4j.task5;
 
-import ru.job4j.task4.Tracker;
-import ru.job4j.task4.Task;
+ import org.junit.Test;
+ import ru.job4j.task4.Task;
+ import ru.job4j.task4.Tracker;
 
-import org.junit.Test;
+ import static org.hamcrest.core.Is.is;
+ import static org.junit.Assert.assertThat;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
-/**
+ /**
  * Class StubInputTest.
  *
  * @author Andrey Lemdyanov
@@ -23,7 +22,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();     // создаём Tracker
         Input input = new StubInput(new String[]{"0", "test name", "desc", "6"});   //создаём StubInput с последовательностью действий
         new StartUI(input, tracker).init();     //   создаём StartUI и вызываем метод init()
-        assertThat(tracker.getAll()[0].getName(), is("test name")); // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
+        assertThat(tracker.getAll().get(0).getName(), is("test name")); // проверяем, что нулевой элемент массива в трекере содержит имя, введённое при эмуляции.
     }
 
     /**
@@ -34,7 +33,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[]{"0", "test name", "desc", "0", "test name next", "description", "1", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName() + tracker.findAll()[1].getName() + " ", is("test name" + "test name next" + " "));
+        assertThat(tracker.findAll().get(0).getName() + tracker.findAll().get(1).getName() + " ", is("test name" + "test name next" + " "));
     }
 
     /**
@@ -45,9 +44,9 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Task task = new Task("test name", "desc", 123L);
         tracker.add(task);
-        Input input = new StubInput(new String[]{"0", "test name next", "description", "2", tracker.getAll()[0].getId(), "some", "words", "6"});
+        Input input = new StubInput(new String[]{"0", "test name next", "description", "2", tracker.getAll().get(0).getId(), "some", "words", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName() + tracker.findAll()[1].getName() + " ", is("some" + "test name next" + " "));
+        assertThat(tracker.findAll().get(0).getName() + tracker.findAll().get(1).getName() + " ", is("some" + "test name next" + " "));
     }
 
     /**
@@ -60,9 +59,9 @@ public class StubInputTest {
         Task tasknew = new Task("some", "words", 133L);
         tracker.add(task);
         tracker.add(tasknew);
-        Input input = new StubInput(new String[]{"0", "test name next", "description", "0", "test name third", "another desc", "3", tracker.getAll()[0].getId(), "1", "6"});
+        Input input = new StubInput(new String[]{"0", "test name next", "description", "0", "test name third", "another desc", "3", tracker.getAll().get(0).getId(), "1", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName() + tracker.findAll()[1].getName() + " ", is("some" + "test name next" + " "));
+        assertThat(tracker.findAll().get(0).getName() + tracker.findAll().get(1).getName() + " ", is("some" + "test name next" + " "));
     }
 
     /**
@@ -73,9 +72,9 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Task task = new Task("test name", "desc", 123L);
         tracker.add(task);
-        Input input = new StubInput(new String[]{"0", "test name third", "another desc", "4", tracker.getAll()[0].getId(), "6"});
+        Input input = new StubInput(new String[]{"0", "test name third", "another desc", "4", tracker.getAll().get(0).getId(), "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findById(tracker.getAll()[0].getId()), is(task));
+        assertThat(tracker.findById(tracker.getAll().get(0).getId()), is(task));
     }
 
     /**
@@ -88,9 +87,9 @@ public class StubInputTest {
         Task tasknew = new Task("test name", "another", 163L);
         tracker.add(task);
         tracker.add(tasknew);
-        Input input = new StubInput(new String[]{"0", "test name third", "another desc", "5", tracker.getAll()[0].getName(), "6"});
+        Input input = new StubInput(new String[]{"0", "test name third", "another desc", "5", tracker.getAll().get(0).getName(), "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findByName("test name")[0].getName() + tracker.findByName("test name")[1].getName() + " ", is("test name" + "test name" + " "));
+        assertThat(tracker.findByName("test name").get(0).getName() + tracker.findByName("test name").get(1).getName() + " ", is("test name" + "test name" + " "));
     }
 
 }

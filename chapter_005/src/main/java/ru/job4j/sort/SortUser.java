@@ -1,6 +1,9 @@
 package ru.job4j.sort;
 
-import java.util.*;
+
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Class SortUser.

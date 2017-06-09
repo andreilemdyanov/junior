@@ -10,7 +10,7 @@ public class Board {
     /**
      * Массив фигур.
      */
-    Figure[] figures;
+    private Figure[] figures;
 
     /**
      * Конструктор.

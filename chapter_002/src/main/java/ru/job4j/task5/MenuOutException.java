@@ -10,7 +10,7 @@ public class MenuOutException extends RuntimeException {
     /**
      * Конструктор класса.
      *
-     * @param msg
+     * @param msg строка.
      */
     public MenuOutException(String msg) {
         super(msg);

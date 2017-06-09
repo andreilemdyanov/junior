@@ -11,11 +11,11 @@ public abstract class BaseAction implements UserAction {
     /**
      * Поле name.
      */
-    String name;
+    private String name;
     /**
      * Поле key.
      */
-    int key;
+    private int key;
 
     /**
      * Конструктор.

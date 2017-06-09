@@ -1,6 +1,11 @@
 package ru.job4j.collection;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.TreeSet;
 
 /**
  * Class CollectionTest.
@@ -13,7 +18,7 @@ public class CollectionTest {
     /**
      * Поле коллекции.
      */
-    Collection<String> collection;
+    private Collection<String> collection;
 
     /**
      * Метод для добавления строк.

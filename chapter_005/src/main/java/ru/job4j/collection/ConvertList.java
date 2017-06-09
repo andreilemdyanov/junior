@@ -16,7 +16,7 @@ public class ConvertList {
     /**
      * Поле списка.
      */
-    List<Integer> list;
+    private List<Integer> list;
 
     /**
      * Конструктор.
@@ -77,7 +77,7 @@ public class ConvertList {
      * @param list лист массивов.
      * @return лист.
      */
-    public List<Integer> convert (List<int[]> list) {
+    public List<Integer> convert(List<int[]> list) {
         List<Integer> res = new ArrayList<>();
         for (int[] mas : list) {
             for (int num : mas) {

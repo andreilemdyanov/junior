@@ -15,7 +15,7 @@ public class ChangeCoins {
     /**
      * Поле сумма для размена.
      */
-    int cash;
+    private int cash;
 
     /**
      * Конструктор.
@@ -28,11 +28,11 @@ public class ChangeCoins {
     /**
      * Поле для простого размена.
      */
-    List<Integer> list = new ArrayList<>();
+    private List<Integer> list = new ArrayList<>();
     /**
      * Поле для всех возможных разменов.
      */
-    List<List<Integer>> list2 = new ArrayList<>();
+    private List<List<Integer>> list2 = new ArrayList<>();
 
     /**
      * Простой размен.

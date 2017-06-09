@@ -16,15 +16,15 @@ class EditItem extends BaseAction {
     /**
      * Конструктор.
      */
-    public EditItem() {
+    EditItem() {
         super("Edit item", 2);
     }
 
     /**
      * Метод заменяет элемент с одинаковым id.
      *
-     * @param input
-     * @param tracker
+     * @param input инпут.
+     * @param tracker трэкер.
      */
     public void execute(Input input, Tracker tracker) {
         String id = input.ask("Please, enter the task's id: ");
@@ -59,17 +59,20 @@ public class MenuTracker {
     /**
      * Поле для выхода.
      */
-    public boolean exit = true;
-    /**
-     * Позиция в массиве.
-     */
-    public int position = 0;
+    private boolean exit = true;
 
+    /**
+     * Геттер exit.
+     * @return exit.
+     */
+    public boolean isExit() {
+        return exit;
+    }
     /**
      * Конструктор.
      *
-     * @param input
-     * @param tracker
+     * @param input инпут.
+     * @param tracker трэкер.
      */
     public MenuTracker(Input input, Tracker tracker) {
         this.input = input;
@@ -92,7 +95,7 @@ public class MenuTracker {
     /**
      * Метод для выбора действия.
      *
-     * @param key
+     * @param key ключ.
      */
     public void select(int key) {
         this.actions.get(key).execute(this.input, this.tracker);
@@ -117,15 +120,15 @@ public class MenuTracker {
         /**
          * Конструктор.
          */
-        public AddItem() {
+        AddItem() {
             super("Add new item", 0);
         }
 
         /**
          * Метод добавляет заявку.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             String name = input.ask("Enter your name: ");
@@ -145,15 +148,15 @@ public class MenuTracker {
         /**
          * Конструктор.
          */
-        public ShowItems() {
+        ShowItems() {
             super("Show all items", 1);
         }
 
         /**
          * Метод выводит все заявки на экран.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             for (Item item : tracker.findAll()) {
@@ -173,15 +176,15 @@ public class MenuTracker {
         /**
          * Конструктор.
          */
-        public Exit() {
+        Exit() {
             super("Exit Program", 6);
         }
 
         /**
          * Метод выходит из программы.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             exit = false;
@@ -199,20 +202,24 @@ public class MenuTracker {
         /**
          * Конструктор.
          */
-        public DeleteItem() {
+        DeleteItem() {
             super("Delete item", 3);
         }
 
         /**
          * Метод удаляет заявку.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Please, enter id for delete: ");
             Task task = new Task("a", "b", System.currentTimeMillis());
-            task.setId(id);
+            for (Item i : tracker.findAll()) {
+                if (i.getId().equals(id)) {
+                    task = (Task) i;
+                }
+            }
             tracker.delete(task);
 
         }
@@ -229,15 +236,15 @@ public class MenuTracker {
         /**
          *
          */
-        public FindItemById() {
+        FindItemById() {
             super("Find item by id", 4);
         }
 
         /**
          * Метод ищет заявку по id.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Please, enter id for search: ");
@@ -257,15 +264,15 @@ public class MenuTracker {
         /**
          *
          */
-        public FindItemByName() {
+        FindItemByName() {
             super("Find items by name", 5);
         }
 
         /**
          * Метод выводит список заявок с определенным именем.
          *
-         * @param input
-         * @param tracker
+         * @param input инпут.
+         * @param tracker трэкер.
          */
         public void execute(Input input, Tracker tracker) {
             String id = input.ask("Please, enter name for search: ");

@@ -1,6 +1,9 @@
 package ru.job4j.bank;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Class BankMap.
@@ -13,7 +16,7 @@ public class BankMap {
     /**
      * Поле для map.
      */
-    Map<User, List<Account>> map;
+    private Map<User, List<Account>> map;
 
     /**
      * Конструктор.
@@ -40,7 +43,7 @@ public class BankMap {
      * @param user пользователь.
      */
     public void deleteUser(User user) {
-        for(User us : map.keySet()) {
+        for (User us : map.keySet()) {
             if (us.equals(user)) {
                 map.remove(us);
             }

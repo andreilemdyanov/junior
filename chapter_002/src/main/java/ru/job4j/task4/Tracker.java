@@ -40,7 +40,7 @@ public class Tracker {
     public void update(Item item) {
         int count = 0;
         for (Item i : items) {
-            if(i.getId().equals(item.getId())) {
+            if (i.getId().equals(item.getId())) {
                 items.set(count, item);
             }
             count++;

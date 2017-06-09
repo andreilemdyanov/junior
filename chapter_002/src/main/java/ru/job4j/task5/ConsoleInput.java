@@ -28,8 +28,8 @@ public class ConsoleInput implements Input {
     /**
      * Перегрузка метода ask.
      *
-     * @param question
-     * @param range
+     * @param question вопрос.
+     * @param range массив вариантов.
      * @return key
      */
 

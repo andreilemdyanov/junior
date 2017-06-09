@@ -10,7 +10,8 @@ public abstract class Figure implements Cloneable {
     /**
      * Позиция фигуры.
      */
-    final Cell position;
+    private final Cell position;
+
 
     /**
      * Конструктор.

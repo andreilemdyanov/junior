@@ -6,7 +6,7 @@ package ru.job4j.task5;
  * @author Andrey Lemdyanov
  * @since 27.04.2017
  */
-public class StubInput implements Input {
+public class StubInput extends ConsoleInput implements Input {
     /**
      * Массив ответов.
      */
@@ -35,8 +35,28 @@ public class StubInput implements Input {
         return answers[position++];
     }
 
+    /**
+     * Метод спросить.
+     * @param question вопрос.
+     * @param range массив вариантов.
+     * @return -1.
+     */
     public int ask(String question, int[] range) {
         //      throw new UnsupportedOperationException("Unsupported operation");
-        return -1;
+//        return -1;
+        boolean invalid = true;
+        int value = -1;
+        do {
+            try {
+                value = super.ask(question, range);
+                invalid = false;
+            } catch (MenuOutException moe) {
+                System.out.println("Please select key from menu.");
+            } catch (NumberFormatException nfe) {
+                System.out.println("Please enter validate data again.");
+            }
+        }
+        while (invalid);
+        return value;
     }
 }

@@ -28,17 +28,17 @@ public class Bishop extends Figure {
         Cell[] path = new Cell[8];
         int count = 0;
         if (dist.getX() <= 7 && dist.getY() <= 7 && dist.getX() >= 0 && dist.getY() >= 0) {
-            if (Math.abs(this.position.getX() - dist.getX()) == Math.abs(this.position.getY() - dist.getY())) {
-                int x = this.position.getX();
-                int y = this.position.getY();
+            if (Math.abs(this.getPosition().getX() - dist.getX()) == Math.abs(this.getPosition().getY() - dist.getY())) {
+                int x = this.getPosition().getX();
+                int y = this.getPosition().getY();
                 do {
-                    if (dist.getX() > this.position.getX() && dist.getY() > this.position.getY()) {
+                    if (dist.getX() > this.getPosition().getX() && dist.getY() > this.getPosition().getY()) {
                         path[count++] = new Cell(x++, y++);
-                    } else if (dist.getX() < this.position.getX() && dist.getY() < this.position.getY()) {
+                    } else if (dist.getX() < this.getPosition().getX() && dist.getY() < this.getPosition().getY()) {
                         path[count++] = new Cell(x--, y--);
-                    } else if (dist.getX() > this.position.getX() && dist.getY() < this.position.getY()) {
+                    } else if (dist.getX() > this.getPosition().getX() && dist.getY() < this.getPosition().getY()) {
                         path[count++] = new Cell(x++, y--);
-                    } else if (dist.getX() < this.position.getX() && dist.getY() > this.position.getY()) {
+                    } else if (dist.getX() < this.getPosition().getX() && dist.getY() > this.getPosition().getY()) {
                         path[count++] = new Cell(x--, y++);
                     }
                 } while (x != dist.getX() && y != dist.getY());

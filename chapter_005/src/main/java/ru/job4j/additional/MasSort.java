@@ -1,6 +1,8 @@
 package ru.job4j.additional;
 
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -14,7 +16,7 @@ public class MasSort {
     /**
      * Массив.
      */
-    String[] mass = new String[]{"K1\\SK1", "K1\\SK2", "K1\\SK1\\SSK1",
+    private String[] mass = new String[]{"K1\\SK1", "K1\\SK2", "K1\\SK1\\SSK1",
             "K1\\SK1\\SSK2", "K2", "K2\\SK1\\SSK1", "K2\\SK1\\SSK2"};
 
     /**
@@ -57,9 +59,10 @@ public class MasSort {
      */
     @Override
     public String toString() {
-        return "MasSort{" +
-                "mass=" + Arrays.toString(mass) +
-                '}';
+        return "MasSort{"
+                + "mass="
+                + Arrays.toString(mass)
+                + '}';
     }
 
     /**

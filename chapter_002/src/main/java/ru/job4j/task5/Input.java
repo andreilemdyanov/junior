@@ -18,8 +18,8 @@ public interface Input {
     /**
      * Перегрузка метода ask.
      *
-     * @param question
-     * @param range
+     * @param question вопрос.
+     * @param range массив вариантов.
      * @return value
      */
     int ask(String question, int[] range);
