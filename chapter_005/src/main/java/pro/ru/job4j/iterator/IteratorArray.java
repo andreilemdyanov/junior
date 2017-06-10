@@ -33,17 +33,35 @@ public class IteratorArray implements Iterator {
     }
 
     /**
+     * Метод для перехода внутри двумерного массива.
+     */
+    public void nextArray() {
+        if (indexdeep == values[index].length && index <= values.length) {
+            index++;
+            indexdeep = 0;
+        }
+    }
+
+    /**
      * Переопределение метода hasNext.
      *
      * @return есть ли еще элемент?
      */
     @Override
     public boolean hasNext() {
-        if (indexdeep == values[index].length) {
-            index++;
-            indexdeep = 0;
+        boolean result;
+        if (values.length > index && values[index].length > indexdeep) {
+            result = true;
+        } else if (values.length - 1 == index && values[index].length > indexdeep) {
+            result = true;
+        } else if (values.length - 1 == index && values[index].length == indexdeep) {
+            result = false;
+        } else if (values.length > index && values[index].length == indexdeep) {
+            result = true;
+        } else {
+            result = false;
         }
-        return values.length > index;
+        return result;
     }
 
     /**
