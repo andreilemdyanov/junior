@@ -3,8 +3,6 @@ package ru.job4j.additional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.TreeSet;
-import java.util.Set;
 
 /**
  * Class MasSort.
@@ -84,40 +82,48 @@ public class MasSort {
         Arrays.sort(m.mass, new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-//                int result;
-//                if (o1.length() == o2.length()) {
-//                    result = o2.compareTo(o1);
-//                }
-//                if (o1.length() != o2.length() && o1.substring(0,1).equals(o2.substring(0, 1))) {
-//                   result = o1.compareTo(o2);
-//                }
-//                if (o1.length() != o2.length() && !o1.substring(0,1).equals(o2.substring(0, 1))) {
-//                  result = o2.compareTo(o1);
-//                } else {
-//                    result = o2.compareTo(o1);
-//                }
+            String i = o1.substring(0, 2);
+            String k = o2.substring(0, 2);
 
-//                if (o1.substring(0,1).equals(o2.substring(0, 1))) {
-//
-//                }
-                return o2.compareTo(o1);
-//                return result;
-            }
-        });
-        Set<String> set = new TreeSet<>();
-        set.addAll(Arrays.asList(m.mass));
-        System.out.println(set);
-        System.out.println(m);
-        Arrays.sort(m.mass, new Comparator<String>() {
-            @Override
-            public int compare(String o1, String o2) {
-                int result;
-                if (o1.length() == o2.length()) {
-                    result = o2.compareTo(o1);
-                } else {
-                   result = o1.compareTo(o2);
+                if (o1.length() > o2.length()) {
+                    if (o1.length() == 6) {
+                        i = o1.substring(0, 2);
+                        k = o2.substring(0, 2);
+                    } else if (o1.length() == 11) {
+                        if (o2.length() == 6) {
+                            i = o1.substring(3, 6);
+                            k = o2.substring(3, 6);
+                        } else {
+                            i = o1.substring(0, 2);
+                            k = o2.substring(0, 2);
+                        }
+                    }
                 }
-                return result;
+                if (o1.length() < o2.length()) {
+                    if (o2.length() == 6) {
+                        i = o1.substring(0, 2);
+                        k = o2.substring(0, 2);
+                    } else if (o2.length() == 11) {
+                        if (o1.length() == 6) {
+                            i = o1.substring(3, 6);
+                            k = o2.substring(3, 6);
+                        } else {
+                            i = o1.substring(0, 2);
+                            k = o2.substring(0, 2);
+                        }
+                    }
+                }
+                if (o1.length() == o2.length()) {
+                    if (o1.length() == 2) {
+                        i = k = o2;
+                    } else if (o2.length() == 6) {
+                        i = k = o2.substring(3);
+                    } else if (o2.length() == 11) {
+                        i = k = o2.substring(7);
+                    }
+                }
+
+                return k.compareTo(i);
             }
         });
         System.out.println(m);
