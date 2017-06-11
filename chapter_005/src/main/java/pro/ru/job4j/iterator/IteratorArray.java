@@ -36,7 +36,7 @@ public class IteratorArray implements Iterator {
      * Метод для перехода внутри двумерного массива.
      */
     public void nextArray() {
-        if (indexdeep == values[index].length && index <= values.length) {
+        if (indexdeep == values[index].length && index < values.length - 1) {
             index++;
             indexdeep = 0;
         }
@@ -49,6 +49,7 @@ public class IteratorArray implements Iterator {
      */
     @Override
     public boolean hasNext() {
+        nextArray();
         boolean result;
         if (values.length > index && values[index].length > indexdeep) {
             result = true;

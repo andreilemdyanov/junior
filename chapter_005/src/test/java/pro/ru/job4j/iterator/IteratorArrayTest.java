@@ -22,7 +22,6 @@ public class IteratorArrayTest {
         IteratorArray it = new IteratorArray(new int[][]{{1, 2}, {3, 4}, {5, 6, 7}});
         String result = " ";
         while (it.hasNext()) {
-            it.nextArray();
             result += (Integer) it.next();
         }
         String expected = " 1234567";
@@ -35,11 +34,9 @@ public class IteratorArrayTest {
     @Test
     public void whenHasNextShouldReturnFalse() {
         IteratorArray it = new IteratorArray(new int[][]{{1, 2}, {3}});
-        it.next();
-        it.next();
-        it.nextArray();
-        it.next();
-        it.hasNext();
+        while (it.hasNext()) {
+            it.next();
+        }
         boolean result = it.hasNext();
         assertThat(result, is(false));
 
