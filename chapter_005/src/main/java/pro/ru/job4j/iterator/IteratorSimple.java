@@ -18,6 +18,10 @@ public class IteratorSimple implements Iterator {
      * Позиция в массиве.
      */
     private int position = 0;
+    /**
+     * Индекс простого числа.
+     */
+    private int index;
 
     /**
      * Конструктор.
@@ -33,17 +37,26 @@ public class IteratorSimple implements Iterator {
      *
      * @return простое?
      */
-    public boolean checkSimple() {
-        boolean flag = true;
-        if (values[position] == 1 || values[position] == 2 || values[position] == 3) {
-            flag = true;
-        }
-        for (int i = 2; i < values[position]; i++) {
-            if (values[position] % i == 0) {
-                flag = false;
+    public int checkSimple() {
+        for (int i = position; i < values.length; i++) {
+            if (values[i] == 1 || values[i] == 2 || values[i] == 3) {
+                position++;
+                return i;
+            }
+            boolean flag = true;
+            for (int j = 2; j < values[i]; j++) {
+                if (values[i] % j == 0) {
+                    position++;
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                position++;
+                return i;
             }
         }
-        return flag;
+        return -1;
     }
 
     /**
@@ -53,7 +66,8 @@ public class IteratorSimple implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        return values.length > position;
+        index = checkSimple();
+        return index != -1;
     }
 
     /**
@@ -63,6 +77,6 @@ public class IteratorSimple implements Iterator {
      */
     @Override
     public Object next() {
-        return values[position++];
+        return values[index];
     }
 }

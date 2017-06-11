@@ -23,11 +23,7 @@ public class IteratorSimpleTest {
         int[] result = new int[8];
         int pos = 0;
         while (it.hasNext()) {
-            if (it.checkSimple()) {
-                result[pos++] = (Integer) it.next();
-            } else {
-                it.next();
-            }
+            result[pos++] = (Integer) it.next();
         }
         assertThat(result, is(new int[]{1, 2, 3, 5, 7, 11, 13, 17}));
     }
