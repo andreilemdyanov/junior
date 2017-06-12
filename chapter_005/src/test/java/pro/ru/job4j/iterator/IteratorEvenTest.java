@@ -18,11 +18,11 @@ public class IteratorEvenTest {
      */
     @Test
     public void whenIteratorReturnOnlyEvenNumbers() {
-        IteratorEven it = new IteratorEven(new int[]{1,2,3,3,3,4,5,5,6,7});
+        IteratorEven it = new IteratorEven(new int[]{1, 2, 3, 3, 3, 4, 5, 5, 6, 7});
         int[] result = new int[3];
         int pos = 0;
         while (it.hasNext()) {
-                result[pos++] = (Integer) (it.next());
+            result[pos++] = (Integer) (it.next());
         }
         assertThat(result, is(new int[]{2, 4, 6}));
     }
@@ -33,7 +33,9 @@ public class IteratorEvenTest {
     @Test
     public void whenHasNextShouldReturnFalse() {
         IteratorEven it = new IteratorEven(new int[]{1});
-        it.next();
+        while (it.hasNext()) {
+            it.next();
+        }
         it.hasNext();
         boolean result = it.hasNext();
         assertThat(result, is(false));

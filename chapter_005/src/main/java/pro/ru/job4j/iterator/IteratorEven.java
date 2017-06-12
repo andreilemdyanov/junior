@@ -18,10 +18,6 @@ public class IteratorEven implements Iterator {
      * Позиция в массиве.
      */
     private int position = 0;
-    /**
-     * Индекс четного числа.
-     */
-    private int index;
 
     /**
      * Конструктор.
@@ -39,7 +35,6 @@ public class IteratorEven implements Iterator {
      */
     public int checkEven() {
         for (int i = position; i < num.length; i++) {
-            position++;
             if (num[i] % 2 == 0) {
                 return i;
             }
@@ -54,8 +49,7 @@ public class IteratorEven implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        index = checkEven();
-        return index != -1;
+        return checkEven() != -1;
     }
 
     /**
@@ -65,6 +59,7 @@ public class IteratorEven implements Iterator {
      */
     @Override
     public Object next() {
-        return num[index++];
+        position = checkEven();
+        return num[position++];
     }
 }
