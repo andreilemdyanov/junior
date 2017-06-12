@@ -50,19 +50,7 @@ public class IteratorArray implements Iterator {
     @Override
     public boolean hasNext() {
         nextArray();
-        boolean result;
-        if (values.length > index && values[index].length > indexdeep) {
-            result = true;
-        } else if (values.length - 1 == index && values[index].length > indexdeep) {
-            result = true;
-        } else if (values.length - 1 == index && values[index].length == indexdeep) {
-            result = false;
-        } else if (values.length > index && values[index].length == indexdeep) {
-            result = true;
-        } else {
-            result = false;
-        }
-        return result;
+        return values.length - 1 >= index && values[index].length - 1 >= indexdeep;
     }
 
     /**
