@@ -60,6 +60,7 @@ public class IteratorArray implements Iterator {
      */
     @Override
     public Object next() {
+        nextArray();
         return values[index][indexdeep++];
     }
 }
