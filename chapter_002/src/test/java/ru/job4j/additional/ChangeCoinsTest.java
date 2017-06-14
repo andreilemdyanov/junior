@@ -38,5 +38,4 @@ public class ChangeCoinsTest {
         List<Integer> expected = new ArrayList<>(Arrays.asList(0, 8, 60));
         assertThat(result, is(expected));
     }
-
 }

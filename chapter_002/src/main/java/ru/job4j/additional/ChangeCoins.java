@@ -19,6 +19,7 @@ public class ChangeCoins {
 
     /**
      * Конструктор.
+     *
      * @param cash сумма.
      */
     public ChangeCoins(int cash) {
@@ -28,7 +29,7 @@ public class ChangeCoins {
     /**
      * Поле для простого размена.
      */
-    private List<Integer> list = new ArrayList<>();
+    private List<Integer> list = new ArrayList<>(3);
     /**
      * Поле для всех возможных разменов.
      */
@@ -40,6 +41,7 @@ public class ChangeCoins {
      * ten - количество десяток.
      * five - количество пятерок.
      * one - количество единиц.
+     *
      * @return список.
      */
     public List<Integer> changeSimple() {
@@ -60,6 +62,7 @@ public class ChangeCoins {
 
     /**
      * Все возможные размены.
+     *
      * @return список списков.
      */
     public List<List<Integer>> changeComplex() {
@@ -71,10 +74,28 @@ public class ChangeCoins {
         return list2;
     }
 
-//    public static void main(String[] args) {
-//        ChangeCoins simple = new ChangeCoins(109);
-//        System.out.println(simple.changeSimple());
+    /**
+     * Переопределение toString.
+     * @return строка.
+     */
+    @Override
+    public String toString() {
+        return "Result: "
+                + "cash = "
+                + this.cash
+                + "\nSimple exchange \nTotal10: "
+                + this.list.get(0)
+                + "\nTotal5: "
+                + this.list.get(1)
+                + "\nTotal1: "
+                + this.list.get(2);
+    }
+
+    public static void main(String[] args) {
+        ChangeCoins simple = new ChangeCoins(109);
+        simple.changeSimple();
 //        ChangeCoins complex = new ChangeCoins(100);
 //        System.out.println(complex.changeComplex());
-//    }
+        System.out.println(simple);
+    }
 }
