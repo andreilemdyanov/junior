@@ -30,11 +30,7 @@ public class IteratorInteger implements IteratorIter {
 
     @Override
     public Object next() {
-//         int result = 0;
         check();
-//        while (ar[position].hasNext()) {
-//            result = (Integer) ar[position].next();
-//        }
         return ar[position].next();
     }
 
