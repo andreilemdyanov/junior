@@ -18,9 +18,20 @@ public class IteratorArray implements Iterator {
      * Поле индекс - количество массивов в массиве.
      */
     private int index = 0;
+
+    /**
+     * Геттер индекса.
+     *
+     * @return индекс.
+     */
+    public int getIndex() {
+        return index;
+    }
+
     /**
      * Поле количества элементов в массиве.
      */
+
     private int indexdeep = 0;
 
     /**
@@ -49,8 +60,9 @@ public class IteratorArray implements Iterator {
      */
     @Override
     public boolean hasNext() {
-        nextArray();
-        return values.length - 1 >= index && values[index].length - 1 >= indexdeep;
+        return (values.length - 1 >= index && values[index].length - 1 >= indexdeep)
+                || (values.length - 1 >= this.getIndex() + 1 && values[this.getIndex() + 1].length - 1 >= 0);
+
     }
 
     /**
