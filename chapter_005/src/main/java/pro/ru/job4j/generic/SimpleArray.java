@@ -14,6 +14,16 @@ public class SimpleArray<T> {
      * Поле массив объектов.
      */
     private Object[] objects;
+
+    /**
+     * Геттер массива.
+     *
+     * @return массив.
+     */
+    public Object[] getObjects() {
+        return objects;
+    }
+
     /**
      * Поле индекс.
      */
@@ -114,32 +124,12 @@ public class SimpleArray<T> {
      */
     @Override
     public String toString() {
-        return "SimpleArray{" +
-                "objects=" + Arrays.toString(objects) +
-                ", index=" + index +
-                '}';
+        return "SimpleArray{"
+                + "objects="
+                + Arrays.toString(objects)
+                + ", index="
+                + index
+                + '}';
     }
 
-    public static void main(String[] args) {
-        SimpleArray<String> s = new SimpleArray<String>(4);
-        s.add("a");
-        s.add("b");
-        s.add("c");
-        s.add("d");
-        System.out.println(s);
-        System.out.println(s.get(2));
-        s.update(2, "r");
-        System.out.println(s);
-        s.delete("r");
-        System.out.println(s);
-        s.print("d");
-        s.delete("a");
-        System.out.println(s);
-        s.delete("d");
-        System.out.println(s);
-        s.delete("b");
-        System.out.println(s);
-
-
-    }
 }
