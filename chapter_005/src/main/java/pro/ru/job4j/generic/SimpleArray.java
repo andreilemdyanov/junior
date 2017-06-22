@@ -132,4 +132,23 @@ public class SimpleArray<T> {
                 + '}';
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SimpleArray<?> that = (SimpleArray<?>) o;
+
+        if (index != that.index) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(objects, that.objects);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(objects);
+        result = 31 * result + index;
+        return result;
+    }
 }
