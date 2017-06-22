@@ -9,21 +9,33 @@ import java.util.Iterator;
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 0.1
+ * @since 22.06.2017
  */
 public class IteratorInteger implements IteratorIter {
-
+    /**
+     * Поле текущий итератор.
+     */
     private Iterator<Integer> current;
-//    private Iterator<Integer> result;
-
+    /**
+     * Поле итератор итераторов.
+     */
     private Iterator<Iterator<Integer>> ar;
 
-
+    /**
+     * Конструктор.
+     *
+     * @param ar итератор итераторов.
+     */
     public IteratorInteger(Iterator<Iterator<Integer>> ar) {
         this.ar = ar;
         this.current = ar.next();
     }
 
+    /**
+     * Переопределение метода next.
+     *
+     * @return object.
+     */
     @Override
     public Object next() {
         if (current.hasNext()) {
@@ -35,31 +47,33 @@ public class IteratorInteger implements IteratorIter {
         return current.next();
     }
 
+    /**
+     * Переопределение hasNext.
+     *
+     * @return есть ли элемент?
+     */
     @Override
     public boolean hasNext() {
 
         return current.hasNext() || ar.hasNext();
     }
 
-
+    /**
+     * Переопределение метода конверт.
+     *
+     * @param it итератор.
+     * @return this.
+     */
     @Override
     public Iterator convert(Iterator it) {
-//        List<Integer> list = new ArrayList<>();
-//        IteratorInteger t = new IteratorInteger(it);
-//        while (t.hasNext()) {
-//            Iterator current = (Iterator) t.next();
-//            while (current.hasNext()) {
-//                list.add((Integer) (current.next()));
-//            }
-//        }
-//        result = new ArrayList<Integer>(list).iterator();
-//        while (t.hasNext()) {
-//            t.next();
-//        }
         return this;
     }
 
-
+    /**
+     * Точка входа.
+     *
+     * @param args массив строк.
+     */
     public static void main(String[] args) {
         Iterator<Integer> it1 = new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4, 5, 6, 7)).iterator();
         Iterator<Integer> it2 = new ArrayList<Integer>(Arrays.asList(11, 22, 33, 44, 55, 66, 77)).iterator();
