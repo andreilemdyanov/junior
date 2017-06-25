@@ -19,10 +19,47 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
      * Поле последнего элемента.
      */
     private Node<E> last = new SimpleLinkedList.Node<>(null);
+
+    /**
+     * Геттер last.
+     *
+     * @return last.
+     */
+    public Node<E> getLast() {
+        return last;
+    }
+
+    /**
+     * Сеттер last.
+     *
+     * @param last новое значение.
+     */
+    public void setLast(Node<E> last) {
+        this.last = last;
+    }
+
     /**
      * Размер контейнера.
      */
     private int size = 0;
+
+    /**
+     * Геттер size.
+     *
+     * @return size.
+     */
+    public int getSize() {
+        return size;
+    }
+
+    /**
+     * Сеттер size.
+     *
+     * @param size новое значение.
+     */
+    public void setSize(int size) {
+        this.size = size;
+    }
 
     /**
      * Вложенный статический класс.
