@@ -19,11 +19,11 @@ public class SimpleArrayTest {
      */
     @Test
     public void whenAddTwoStringThenArrayHasIt() {
-        SimpleArray<String> simple = new SimpleArray<>(2);
-        simple.add("a");
-        simple.add("l");
+        SimpleArray<User> simple = new SimpleArray<>(2);
+        simple.add(new User("a"));
+        simple.add(new User("l"));
         Object[] result = simple.getObjects();
-        Object[] expected = new Object[]{"a", "l"};
+        Object[] expected = new Object[]{new User("a"), new User("l")};
         assertThat(result, is(expected));
     }
 
@@ -31,12 +31,12 @@ public class SimpleArrayTest {
      * Тест геттера элемента.
      */
     @Test
-    public void whenGetSecondStringThenReturnIt() {
-        SimpleArray<String> simple = new SimpleArray<>(2);
-        simple.add("a");
-        simple.add("l");
-        String result = simple.get(1);
-        String expected = "l";
+    public void whenGetSecondUserThenReturnIt() {
+        SimpleArray<User> simple = new SimpleArray<>(2);
+        simple.add(new User("a"));
+        simple.add(new User("l"));
+        User result = simple.get(1);
+        User expected = new User("l");
         assertThat(result, is(expected));
 
     }
@@ -46,13 +46,13 @@ public class SimpleArrayTest {
      */
     @Test
     public void whenUpdateSecondStringThenReplaceIt() {
-        SimpleArray<String> simple = new SimpleArray<>(3);
-        simple.add("a");
-        simple.add("l");
-        simple.add("j");
-        simple.update(1, "p");
+        SimpleArray<User> simple = new SimpleArray<>(3);
+        simple.add(new User("a"));
+        simple.add(new User("l"));
+        simple.add(new User("j"));
+        simple.update(new User("l"));
         Object[] result = simple.getObjects();
-        Object[] expected = new Object[]{"a", "p", "j"};
+        Object[] expected = new Object[]{new User("a"), new User("l"), new User("j")};
         assertThat(result, is(expected));
 
     }
@@ -62,13 +62,13 @@ public class SimpleArrayTest {
      */
     @Test
     public void whenDeleteStringThenArrayHasNotThisString() {
-        SimpleArray<String> simple = new SimpleArray<>(3);
-        simple.add("a");
-        simple.add("l");
-        simple.add("j");
-        simple.delete("l");
+        SimpleArray<User> simple = new SimpleArray<>(3);
+        simple.add(new User("a"));
+        simple.add(new User("l"));
+        simple.add(new User("j"));
+        simple.delete(new User("l"));
         Object[] result = simple.getObjects();
-        Object[] expected = new Object[]{"a", "j"};
+        Object[] expected = new Object[]{new User("a"), new User("j")};
         assertThat(result, is(expected));
 
     }

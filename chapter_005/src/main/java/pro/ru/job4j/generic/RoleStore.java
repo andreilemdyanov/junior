@@ -7,11 +7,7 @@ package pro.ru.job4j.generic;
  * @version $Id$
  * @since 22.06.2017
  */
-public class RoleStore<T> implements Store<Role> {
-    /**
-     * Контейнер.
-     */
-    private SimpleArray<Role> r;
+public class RoleStore<T extends Role> extends BaseStore<Role> {
 
     /**
      * Конструктор.
@@ -19,57 +15,7 @@ public class RoleStore<T> implements Store<Role> {
      * @param r контейнер.
      */
     public RoleStore(SimpleArray<Role> r) {
-        this.r = r;
-    }
-
-    /**
-     * Метод для отображения объекта по id.
-     *
-     * @return строка.
-     */
-    public String forEach() {
-        String s = "";
-        for (Object r : r.getObjects()) {
-            s += "id: " + ((Role) r).getId() + " ";
-        }
-        return s;
-    }
-
-    /**
-     * Геттер контейнера.
-     *
-     * @return контейнер.
-     */
-    public SimpleArray<Role> getRole() {
-        return r;
-    }
-
-    /**
-     * Добавить роль.
-     *
-     * @param a роль.
-     */
-    public void addRole(Role a) {
-        r.add(a);
-    }
-
-    /**
-     * Обновить роль.
-     *
-     * @param position место.
-     * @param a        новая роль.
-     */
-    public void updateRole(int position, Role a) {
-        r.update(position, a);
-    }
-
-    /**
-     * Удалить роль.
-     *
-     * @param a роль.
-     */
-    public void deleteRole(Role a) {
-        r.delete(a);
+        super(r);
     }
 
     /**
@@ -84,6 +30,4 @@ public class RoleStore<T> implements Store<Role> {
                 + this.forEach()
                 + '}';
     }
-
-
 }

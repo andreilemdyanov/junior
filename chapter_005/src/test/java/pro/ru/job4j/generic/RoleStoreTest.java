@@ -18,13 +18,13 @@ public class RoleStoreTest {
      */
     @Test
     public void whenAddFiveRolesThenItWorks() {
-        RoleStore role = new RoleStore(new SimpleArray<>(5));
-        role.addRole(new Role("1"));
-        role.addRole(new Role("2"));
-        role.addRole(new Role("3"));
-        role.addRole(new Role("4"));
-        role.addRole(new Role("5"));
-        SimpleArray result = role.getRole();
+        RoleStore<Role> role = new RoleStore<>(new SimpleArray<>(5));
+        role.add(new Role("1"));
+        role.add(new Role("2"));
+        role.add(new Role("3"));
+        role.add(new Role("4"));
+        role.add(new Role("5"));
+        SimpleArray result = role.get();
         SimpleArray<Role> expected = new SimpleArray<>(5);
         expected.add(new Role("1"));
         expected.add(new Role("2"));
@@ -39,19 +39,18 @@ public class RoleStoreTest {
      */
     @Test
     public void whenUpdateSecondRoleThenReplacedIt() {
-        RoleStore role = new RoleStore(new SimpleArray<>(5));
-        role.addRole(new Role("1"));
-        Role b = new Role("2");
-        role.addRole(b);
-        role.addRole(new Role("3"));
-        role.addRole(new Role("4"));
-        role.addRole(new Role("5"));
-        role.updateRole(2, new Role("6"));
-        SimpleArray result = role.getRole();
+        RoleStore<Role> role = new RoleStore<>(new SimpleArray<>(5));
+        role.add(new Role("1"));
+        role.add(new Role("2"));
+        role.add(new Role("3"));
+        role.add(new Role("4"));
+        role.add(new Role("5"));
+        role.update(new Role("5"));
+        SimpleArray result = role.get();
         SimpleArray<Role> expected = new SimpleArray<>(5);
         expected.add(new Role("1"));
         expected.add(new Role("2"));
-        expected.add(new Role("6"));
+        expected.add(new Role("3"));
         expected.add(new Role("4"));
         expected.add(new Role("5"));
         assertThat(result, is(expected));
@@ -62,15 +61,15 @@ public class RoleStoreTest {
      */
     @Test
     public void whenDeleteFirstRoleThenItsGone() {
-        RoleStore role = new RoleStore(new SimpleArray<>(5));
-        role.addRole(new Role("1"));
+        RoleStore<Role> role = new RoleStore<>(new SimpleArray<>(5));
+        role.add(new Role("1"));
         Role b = new Role("2");
-        role.addRole(b);
-        role.addRole(new Role("3"));
-        role.addRole(new Role("4"));
-        role.addRole(new Role("5"));
-        role.deleteRole(b);
-        SimpleArray result = role.getRole();
+        role.add(b);
+        role.add(new Role("3"));
+        role.add(new Role("4"));
+        role.add(new Role("5"));
+        role.delete(b);
+        SimpleArray result = role.get();
         SimpleArray<Role> expected = new SimpleArray<>(4);
         expected.add(new Role("1"));
         expected.add(new Role("3"));

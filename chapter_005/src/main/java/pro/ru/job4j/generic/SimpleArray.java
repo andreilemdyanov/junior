@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @version $Id$
  * @since 16.06.2017
  */
-public class SimpleArray<T> {
+public class SimpleArray<T extends Base> {
     /**
      * Поле массив объектов.
      */
@@ -90,11 +90,16 @@ public class SimpleArray<T> {
     /**
      * Обновление элемента.
      *
-     * @param position позиция в массиве.
-     * @param value    новое значение.
+     * @param value новое значение.
      */
-    public void update(int position, T value) {
-        this.objects[position] = value;
+    public void update(T value) {
+        int pos = 0;
+        while (pos < objects.length) {
+            if (((T) objects[pos]).getId().equals(value.getId())) {
+                objects[pos] = value;
+            }
+            pos++;
+        }
     }
 
     /**
@@ -132,7 +137,12 @@ public class SimpleArray<T> {
                 + '}';
     }
 
-
+    /**
+     * Переопределение equals.
+     *
+     * @param o объект.
+     * @return равны?
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -145,6 +155,11 @@ public class SimpleArray<T> {
         return Arrays.equals(objects, that.objects);
     }
 
+    /**
+     * Переопределение hashcode.
+     *
+     * @return hashcode.
+     */
     @Override
     public int hashCode() {
         int result = Arrays.hashCode(objects);

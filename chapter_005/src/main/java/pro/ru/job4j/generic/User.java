@@ -16,6 +16,7 @@ public class User extends Base {
     public User(String id) {
         this.setId(id);
     }
+
     /**
      * Переопределение equals.
      *
