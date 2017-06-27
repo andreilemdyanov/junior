@@ -16,6 +16,22 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
     private Node<E> first = new SimpleLinkedList.Node<>(null);
 
     /**
+     * Геттер первого нода.
+     * @return нод.
+     */
+    public Node<E> getFirst() {
+        return first;
+    }
+
+    /**
+     * Сеттер первого нода.
+     * @param first новый нод.
+     */
+    public void setFirst(Node<E> first) {
+        this.first = first;
+    }
+
+    /**
      * Поле последнего элемента.
      */
     private Node<E> last = new SimpleLinkedList.Node<>(null);
@@ -109,6 +125,21 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
         size++;
     }
 
+    /**
+     * Метод укорачивает лист на один объект с начала.
+     */
+    public void step() {
+        if (size == 1 && this.getFirst() == this.getLast()) {
+            this.setFirst(null);
+            this.setLast(null);
+            this.setSize(size - 1);
+        } else {
+            this.setFirst(this.getFirst().next);
+            this.getFirst().previous = null;
+            this.getLast().next = this.getFirst();
+            this.setSize(this.getSize() - 1);
+        }
+    }
     /**
      * Геттер элемента.
      *
