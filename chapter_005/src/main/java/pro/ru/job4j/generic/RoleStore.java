@@ -7,6 +7,12 @@ package pro.ru.job4j.generic;
  * @version $Id$
  * @since 22.06.2017
  */
+
+/**
+ * RoleStore.
+ *
+ * @param <T> type.
+ */
 public class RoleStore<T extends Role> extends BaseStore<Role> {
 
     /**

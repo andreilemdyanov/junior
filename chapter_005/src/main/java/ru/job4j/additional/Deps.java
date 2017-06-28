@@ -28,6 +28,8 @@ public class Deps {
 
     /**
      * Конструктор.
+     *
+     * @param deps лист.
      */
     public Deps(List<String> deps) {
         this.deps = deps;

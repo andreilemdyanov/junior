@@ -28,4 +28,14 @@ public class Role extends Base {
         String o = ((Role) obj).getId();
         return this.getId().equals(o);
     }
+
+    /**
+     * Переопределение hashcode.
+     *
+     * @return hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

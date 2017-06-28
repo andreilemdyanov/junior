@@ -9,6 +9,18 @@ import java.util.Iterator;
  * @version $Id$
  * @since 0.1
  */
+
+/**
+ * IteratorIter.
+ *
+ * @param <Integer> type.
+ */
 public interface IteratorIter<Integer> extends Iterator {
-    Iterator<Integer> convert (Iterator<Iterator<Integer>> it);
+    /**
+     * Конверт.
+     *
+     * @param it итератор итераторов.
+     * @return итератор.
+     */
+    Iterator<Integer> convert(Iterator<Iterator<Integer>> it);
 }

@@ -9,6 +9,12 @@ import java.util.Iterator;
  * @version $Id$
  * @since 22.06.2017
  */
+
+/**
+ * SimpleArrayList.
+ *
+ * @param <E> type.
+ */
 public class SimpleArrayList<E> implements SimpleContainer<E> {
     /**
      * Массив.
@@ -72,7 +78,7 @@ public class SimpleArrayList<E> implements SimpleContainer<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
-            int index = 0;
+            private int index = 0;
 
             @Override
             public boolean hasNext() {

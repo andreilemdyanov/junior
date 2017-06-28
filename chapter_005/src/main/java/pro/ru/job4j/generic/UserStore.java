@@ -7,6 +7,12 @@ package pro.ru.job4j.generic;
  * @version $Id$
  * @since 22.06.2017
  */
+
+/**
+ * UserStore.
+ *
+ * @param <T> type.
+ */
 public class UserStore<T extends User> extends BaseStore<User> {
 
     /**

@@ -7,6 +7,12 @@ package pro.ru.job4j.generic;
  * @version $Id$
  * @since 22.06.2017
  */
+
+/**
+ * Store.
+ *
+ * @param <T> type.
+ */
 public interface Store<T extends Base> {
     /**
      * Добавить.

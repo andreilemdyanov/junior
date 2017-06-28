@@ -91,6 +91,10 @@ public class ChangeCoins {
                 + this.list.get(2);
     }
 
+    /**
+     * Точка входа.
+     * @param args массив строк.
+     */
     public static void main(String[] args) {
         ChangeCoins simple = new ChangeCoins(109);
         simple.changeSimple();

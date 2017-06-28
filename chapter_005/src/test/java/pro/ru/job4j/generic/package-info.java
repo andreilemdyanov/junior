@@ -1,8 +1,8 @@
 /**
- * //TODO add comments.
+ * Package generic.
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 0.1
+ * @since 28.06.2017
  */
 package pro.ru.job4j.generic;

@@ -9,6 +9,12 @@ import java.util.Arrays;
  * @version $Id$
  * @since 16.06.2017
  */
+
+/**
+ * SimpleArray.
+ *
+ * @param <T> type.
+ */
 public class SimpleArray<T extends Base> {
     /**
      * Поле массив объектов.
@@ -39,7 +45,7 @@ public class SimpleArray<T extends Base> {
     }
 
     /**
-     * Сеттер индекса
+     * Сеттер индекса.
      *
      * @param index новый индекс.
      */
@@ -145,12 +151,18 @@ public class SimpleArray<T extends Base> {
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         SimpleArray<?> that = (SimpleArray<?>) o;
 
-        if (index != that.index) return false;
+        if (index != that.index) {
+            return false;
+        }
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(objects, that.objects);
     }

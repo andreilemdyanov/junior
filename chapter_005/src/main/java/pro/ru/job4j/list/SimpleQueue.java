@@ -9,6 +9,12 @@ import java.util.Iterator;
  * @version $Id$
  * @since 28.06.2017
  */
+
+/**
+ * SimpleQueue.
+ *
+ * @param <E> type.
+ */
 public class SimpleQueue<E> implements Iterable<E> {
     /**
      * Поле лист.
@@ -51,6 +57,11 @@ public class SimpleQueue<E> implements Iterable<E> {
         return null;
     }
 
+    /**
+     * Точка входа.
+     *
+     * @param args массив строк.
+     */
     public static void main(String[] args) {
         SimpleQueue<Integer> n = new SimpleQueue<>();
         n.push(1);

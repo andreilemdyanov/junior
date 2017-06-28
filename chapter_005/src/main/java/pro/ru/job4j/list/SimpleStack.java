@@ -9,6 +9,12 @@ import java.util.Iterator;
  * @version $Id$
  * @since 25.06.2017
  */
+
+/**
+ * SimpleStack.
+ *
+ * @param <E> type.
+ */
 public class SimpleStack<E> implements Iterable<E> {
     /**
      * Контейнер.

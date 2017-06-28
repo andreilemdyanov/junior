@@ -9,6 +9,12 @@ import java.util.Iterator;
  * @version $Id$
  * @since 24.06.2017
  */
+
+/**
+ * SimpleLinkedList.
+ *
+ * @param <E> type.
+ */
 public class SimpleLinkedList<E> implements SimpleContainer<E> {
     /**
      * Поле первого элемента.
@@ -17,6 +23,7 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
 
     /**
      * Геттер первого нода.
+     *
      * @return нод.
      */
     public Node<E> getFirst() {
@@ -25,6 +32,7 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
 
     /**
      * Сеттер первого нода.
+     *
      * @param first новый нод.
      */
     public void setFirst(Node<E> first) {
@@ -83,10 +91,24 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
      * @param <E> тип параметра.
      */
     private static class Node<E> {
-        E element;
-        Node<E> next;
-        Node<E> previous;
+        /**
+         * Значение.
+         */
+        private E element;
+        /**
+         * Ссылка на следующий элемент.
+         */
+        private Node<E> next;
+        /**
+         * Ссылка на предыдущий.
+         */
+        private Node<E> previous;
 
+        /**
+         * Конструктор.
+         *
+         * @param element элемент.
+         */
         Node(E element) {
             this.element = element;
         }
@@ -98,9 +120,10 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
          */
         @Override
         public String toString() {
-            return "Node{" +
-                    "element=" + element +
-                    '}';
+            return "Node{"
+                    + "element="
+                    + element
+                    + '}';
         }
     }
 
@@ -140,6 +163,7 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
             this.setSize(this.getSize() - 1);
         }
     }
+
     /**
      * Геттер элемента.
      *
@@ -169,8 +193,8 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
     @Override
     public Iterator<E> iterator() {
         Iterator<E> it = new Iterator<E>() {
-            Node<E> currentNode = first;
-            int count = 0;
+            private Node<E> currentNode = first;
+            private int count = 0;
 
             @Override
             public E next() {
@@ -188,7 +212,11 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
         return it;
     }
 
-
+    /**
+     * Точка входа.
+     *
+     * @param args массив строк.
+     */
     public static void main(String[] args) {
         SimpleLinkedList<Integer> list = new SimpleLinkedList<>();
         list.add(1);

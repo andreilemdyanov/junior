@@ -28,4 +28,14 @@ public class User extends Base {
         String o = ((User) obj).getId();
         return this.getId().equals(o);
     }
+
+    /**
+     * Переопределение hashcode.
+     *
+     * @return hashcode.
+     */
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

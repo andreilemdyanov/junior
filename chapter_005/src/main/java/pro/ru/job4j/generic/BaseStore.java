@@ -7,10 +7,16 @@ package pro.ru.job4j.generic;
  * @version $Id$
  * @since 25.06.2017
  */
+
+/**
+ * BaseStore.
+ *
+ * @param <T> type.
+ */
 public abstract class BaseStore<T extends Base> implements Store<T> {
 
     /**
-     * Поле листа.
+     * Поле лист.
      */
     private SimpleArray<T> u;
 
