@@ -38,11 +38,7 @@ public class SimpleStack<E> implements Iterable<E> {
      * @return элемент.
      */
     public E pop() {
-        Object a = list.get(list.getSize() - 1);
-        list.setLast(null);
-        list.setSize(list.getSize() - 1);
-        return (E) a;
-
+        return list.removeLast();
     }
 
     /**

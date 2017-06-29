@@ -33,8 +33,9 @@ public class SimpleStackTest {
     public void whenPopStringInStackThenReturnIt() {
         SimpleStack<String> stack = new SimpleStack<>();
         stack.push("1");
+        stack.push("2");
         String result = stack.pop();
-        String expected = "1";
+        String expected = "2";
         assertThat(result, is(expected));
     }
 

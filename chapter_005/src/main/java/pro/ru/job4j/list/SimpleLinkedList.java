@@ -77,15 +77,6 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
     }
 
     /**
-     * Сеттер size.
-     *
-     * @param size новое значение.
-     */
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    /**
      * Вложенный статический класс.
      *
      * @param <E> тип параметра.
@@ -151,17 +142,30 @@ public class SimpleLinkedList<E> implements SimpleContainer<E> {
     /**
      * Метод укорачивает лист на один объект с начала.
      */
-    public void step() {
+    public void removeFirst() {
         if (size == 1 && this.getFirst() == this.getLast()) {
             this.setFirst(null);
             this.setLast(null);
-            this.setSize(size - 1);
+            this.size = this.size - 1;
         } else {
             this.setFirst(this.getFirst().next);
             this.getFirst().previous = null;
             this.getLast().next = this.getFirst();
-            this.setSize(this.getSize() - 1);
+            this.size = this.size - 1;
         }
+
+    }
+
+    /**
+     * Метод укорачивает лист на один элемент с конца.
+     *
+     * @return удаленный элемент.
+     */
+    public E removeLast() {
+        Object a = this.get(this.size - 1);
+        this.last = null;
+        this.size = this.size - 1;
+        return (E) a;
     }
 
     /**

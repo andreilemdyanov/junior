@@ -1,7 +1,5 @@
 package pro.ru.job4j.list;
 
-import java.util.Iterator;
-
 /**
  * Class SimpleQueue.
  *
@@ -15,7 +13,7 @@ import java.util.Iterator;
  *
  * @param <E> type.
  */
-public class SimpleQueue<E> implements Iterable<E> {
+public class SimpleQueue<E> {
     /**
      * Поле лист.
      */
@@ -41,7 +39,7 @@ public class SimpleQueue<E> implements Iterable<E> {
         Object a = null;
         if (list.getSize() > 0) {
             a = list.get(0);
-            list.step();
+            list.removeFirst();
             if (list.getSize() == 0) {
                 list = new SimpleLinkedList<E>();
 
@@ -52,38 +50,4 @@ public class SimpleQueue<E> implements Iterable<E> {
         return (E) a;
     }
 
-    @Override
-    public Iterator<E> iterator() {
-        return null;
-    }
-
-    /**
-     * Точка входа.
-     *
-     * @param args массив строк.
-     */
-    public static void main(String[] args) {
-        SimpleQueue<Integer> n = new SimpleQueue<>();
-        n.push(1);
-        n.push(5);
-        n.push(9);
-        n.push(8);
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        n.push(7);
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        n.push(7);
-        n.push(66);
-        n.push(56);
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-        System.out.println(n.pop());
-
-
-    }
 }
