@@ -1,6 +1,5 @@
 package pro.ru.job4j.set;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -13,6 +12,7 @@ import java.util.Iterator;
 
 /**
  * SimpleArraySet.
+ *
  * @param <E> type.
  */
 public class SimpleArraySet<E> implements Iterable<E> {
@@ -54,10 +54,26 @@ public class SimpleArraySet<E> implements Iterable<E> {
             container = temp;
 
         }
-        if (!Arrays.asList(container).contains(o)) {
+        if (!this.checkSame(o)) {
             container[position++] = o;
         }
 
+    }
+
+    /**
+     * Метод проверяет есть ли такой же элемент.
+     *
+     * @param o элемент.
+     * @return да/нет
+     */
+    public boolean checkSame(E o) {
+        boolean flag = false;
+        for (Object a : container) {
+            if (o.equals(a)) {
+                flag = true;
+            }
+        }
+        return flag;
     }
 
     /**
