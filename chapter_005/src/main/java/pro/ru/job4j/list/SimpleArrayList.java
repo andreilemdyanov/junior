@@ -1,5 +1,6 @@
 package pro.ru.job4j.list;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -92,4 +93,39 @@ public class SimpleArrayList<E> implements SimpleContainer<E> {
         };
     }
 
+    /**
+     * Переопределение equals.
+     *
+     * @param o элемент.
+     * @return да/нет.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SimpleArrayList<?> that = (SimpleArrayList<?>) o;
+
+        if (position != that.position) {
+            return false;
+        }
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(container, that.container);
+    }
+
+    /**
+     * Переопределение hashcode.
+     *
+     * @return hashcode.
+     */
+    @Override
+    public int hashCode() {
+        int result = Arrays.hashCode(container);
+        result = 31 * result + position;
+        return result;
+    }
 }
