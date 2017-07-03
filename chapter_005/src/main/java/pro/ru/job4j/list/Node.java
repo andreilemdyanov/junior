@@ -24,6 +24,15 @@ public class Node<T> {
     private Node<T> next;
 
     /**
+     * Сеттер.
+     *
+     * @param next элемент.
+     */
+    public void setNext(Node<T> next) {
+        this.next = next;
+    }
+
+    /**
      * Конструктор.
      *
      * @param value значение.
@@ -49,23 +58,4 @@ public class Node<T> {
         return true;
     }
 
-    /**
-     * Точка входа.
-     * @param args массив строк.
-     */
-    public static void main(String[] args) {
-
-        Node first = new Node<>(1);
-        Node two = new Node<>(2);
-        Node third = new Node<>(3);
-        Node four = new Node<>(4);
-
-        first.next = two;
-        two.next = third;
-        third.next = four;
-        four.next = first;
-
-        System.out.println(first.hasCycle());
-
-    }
 }
