@@ -48,11 +48,19 @@ public class Node<T> {
      */
     public boolean hasCycle() {
         Integer temp = this.hashCode();
-        Node o = this;
-        while (o.hashCode() != temp) {
-            o = o.next;
-            if (o == null) {
+        Node twoStep = this.next;
+        Node oneStep = this.next;
+        if (oneStep == null || twoStep.next == null) {
+            return false;
+        }
+        while (oneStep.hashCode() != temp) {
+            oneStep = oneStep.next;
+            twoStep = twoStep.next.next;
+            if (oneStep == null || twoStep == null) {
                 return false;
+            }
+            if (oneStep.hashCode() == twoStep.hashCode()) {
+                break;
             }
         }
         return true;

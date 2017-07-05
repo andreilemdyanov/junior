@@ -44,7 +44,7 @@ public class NodeTest {
         first.setNext(two);
         two.setNext(third);
         third.setNext(four);
-        four.setNext(first);
+        four.setNext(two);
         boolean result = two.hasCycle();
         assertThat(result, is(true));
     }
@@ -85,4 +85,31 @@ public class NodeTest {
         assertThat(result, is(true));
     }
 
+    /**
+     * Тест когда один из нодов не содержит ссылки.
+     */
+    @Test
+    public void whenFourNodeHasNotCycle() {
+        Node<Integer> first = new Node<>(1);
+        Node<Integer> two = new Node<>(2);
+        Node<Integer> third = new Node<>(3);
+        Node<Integer> four = new Node<>(4);
+
+        first.setNext(two);
+        third.setNext(four);
+        four.setNext(first);
+        boolean result = four.hasCycle();
+        assertThat(result, is(false));
+    }
+
+    /**
+     * Тест когда нод не содержит ссылок.
+     */
+    @Test
+    public void whenFirstNodeHasNotCycle() {
+        Node<Integer> first = new Node<>(1);
+
+        boolean result = first.hasCycle();
+        assertThat(result, is(false));
+    }
 }
