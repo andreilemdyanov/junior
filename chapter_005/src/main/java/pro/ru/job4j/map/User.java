@@ -36,4 +36,31 @@ public class User {
         this.birthday = birthday;
     }
 
+    /**
+     * Геттер имени.
+     *
+     * @return имя.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Геттер количества детей.
+     *
+     * @return количество детей.
+     */
+    public int getChildren() {
+        return children;
+    }
+
+    /**
+     * Геттер ДР.
+     *
+     * @return ДР.
+     */
+    public GregorianCalendar getBirthday() {
+        return birthday;
+    }
+
 }
