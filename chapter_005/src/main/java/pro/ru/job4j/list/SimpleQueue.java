@@ -31,6 +31,15 @@ public class SimpleQueue<E> {
     }
 
     /**
+     * Геттер size.
+     *
+     * @return size.
+     */
+    public int size() {
+        return this.list.getSize();
+    }
+
+    /**
      * Выводит первый элемент и удаляет его.
      *
      * @return элемент.

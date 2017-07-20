@@ -42,6 +42,15 @@ public class SimpleStack<E> implements Iterable<E> {
     }
 
     /**
+     * Геттер size.
+     *
+     * @return size.
+     */
+    public int size() {
+        return this.list.getSize();
+    }
+
+    /**
      * Итератор.
      *
      * @return итератор.
