@@ -108,4 +108,20 @@ public class TreeTest {
 
         assertThat(result, is(false));
     }
+
+    /**
+     * Тест, проверяющий бинарность дерева.
+     */
+    @Test
+    public void whenTreeIsBinaryReturnTrue() {
+        Tree<String> tree = new Tree<>("Dad");
+        tree.addParent("Mother");
+        tree.addParent("Bubba");
+        tree.addParent("Mot");
+        tree.addParent("Bu");
+
+        boolean result = tree.isBinary();
+
+        assertThat(result, is(true));
+    }
 }

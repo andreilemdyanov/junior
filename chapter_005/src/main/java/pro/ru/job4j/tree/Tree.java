@@ -72,6 +72,10 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
          * Ссылки на левую и правую ветвь.
          */
         private Node<E> left, right;
+        /**
+         * Счетчик ветвей.
+         */
+        private int count = 0;
 
         /**
          * Конструктор узла.
@@ -80,6 +84,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
          */
         Node(E value) {
             this.value = value;
+        }
+
+        /**
+         * Геттер количества ветвей у нода.
+         *
+         * @return число.
+         */
+        public int getCount() {
+            return count;
+        }
+
+        /**
+         * Сеттер количества ветвей у нода.
+         *
+         * @param count число.
+         */
+        public void setCount(int count) {
+            this.count = count;
         }
 
         /**
@@ -126,6 +148,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             } else {
                 second.right = newNode;
             }
+            second.setCount(second.getCount() + 1);
         }
         size++;
     }
@@ -203,4 +226,18 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         }
     }
 
+    /**
+     * Метод определяет бинарность дерева.
+     * @return бинарно?
+     */
+    public boolean isBinary() {
+        Iterator it = this.iterator();
+        boolean flag = true;
+        while (it.hasNext()) {
+            if (!(((Node) it.next()).count <= 2)) {
+                flag = false;
+            }
+        }
+        return flag;
+    }
 }
