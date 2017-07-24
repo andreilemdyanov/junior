@@ -127,31 +127,24 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         Node<E> first = root, second = null;
         while (first != null) {
             int cmp = parent.compareTo(first.value);
-            if (cmp == 0) {
-                first.value = parent;
-                return;
+            second = first;
+            if (cmp <= 0) {
+                first = first.left;
             } else {
-                second = first;
-                if (cmp < 0) {
-                    first = first.left;
-                } else {
-                    first = first.right;
-                }
+                first = first.right;
             }
+
         }
         Node<E> newNode = new Node<E>(parent);
-        if (second == null) {
-            root = newNode;
+        if (parent.compareTo(second.value) <= 0) {
+            second.left = newNode;
         } else {
-            if (parent.compareTo(second.value) < 0) {
-                second.left = newNode;
-            } else {
-                second.right = newNode;
-            }
-            second.setCount(second.getCount() + 1);
+            second.right = newNode;
         }
+        second.setCount(second.getCount() + 1);
         size++;
     }
+
 
     /**
      * Реализация добавления детей родителям.
@@ -228,6 +221,7 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
 
     /**
      * Метод определяет бинарность дерева.
+     *
      * @return бинарно?
      */
     public boolean isBinary() {
