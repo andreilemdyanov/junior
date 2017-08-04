@@ -11,7 +11,7 @@ public class CountWordsAndSpaces {
     /**
      * Текст.
      */
-    private String text = "То, что мы  ,   легко!! можем??? отыскать... требуемый ключ x в дереве!, , , , , ";
+    private String text = "То, что мы  ,   легко!! можем??? отыскать... требуемый    Необходимо, что бы вначале запуска программы из первой части на экране выводилась информация о программа. А после вычисления данных, выводилась запись о завершении программы. Важно, эта информация всегда должна выводиться в начале и в конце вычисления.     dkfkf fk khk d dgkf,,,,, ключ x в дереве!, , , , , ";
 
     /**
      * Точка входа.
@@ -20,17 +20,16 @@ public class CountWordsAndSpaces {
      */
     public static void main(String[] args) {
         CountWordsAndSpaces count = new CountWordsAndSpaces();
-        System.out.println("Старт");
-        new Thread() {
-            @Override
+
+        Thread wordsThread = new Thread(new Runnable() {
             public void run() {
                 String[] words = count.text.split("[\\s-,;:.!?]+");
                 System.out.printf("Количество слов: %s\n", words.length);
-            }
-        }.start();
 
-        new Thread() {
-            @Override
+            }
+        });
+
+        Thread spacesThread = new Thread(new Runnable() {
             public void run() {
                 int spaces = 0;
                 char[] string = count.text.toCharArray();
@@ -41,7 +40,20 @@ public class CountWordsAndSpaces {
                 }
                 System.out.printf("Количество пробелов: %s\n", spaces);
             }
-        }.start();
+        });
+
+        System.out.println("Старт");
+        wordsThread.start();
+        spacesThread.start();
+        try {
+            wordsThread.join();
+            spacesThread.join();
+            Thread.sleep(1000);
+            wordsThread.interrupt();
+            spacesThread.interrupt();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("Финиш");
     }
 
