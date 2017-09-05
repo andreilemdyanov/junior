@@ -1,5 +1,8 @@
 package pro.ru.job4j.additional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class Node.
  *
@@ -30,10 +33,24 @@ public class Node {
      * Метод меняет последовательность ссылок на обратную.
      */
     public void reverse() {
-        this.next.next.next = this.next;
-        this.next.next = this;
-        this.next = null;
+        List<Node> list = new ArrayList<>();
+        Node current = this;
+        while (current != null) {
+            list.add(current);
+            current = current.next;
+        }
+        for (int i = list.size() - 1; i > 0; i--) {
+            list.get(i).next = list.get(i - 1);
+        }
+        list.get(0).next = null;
+    }
 
+    @Override
+    public String toString() {
+        return "Node{"
+                + " value="
+                + value
+                + '}';
     }
 
     /**
@@ -47,9 +64,11 @@ public class Node {
         Node node3 = new Node(3);
         node1.next = node2;
         node2.next = node3;
-        System.out.println(node1.value + " " + node1.next.value + " " + node1.next.next.value);
+        System.out.println(node1.value + " " + node1.next.value + " "
+                + node1.next.next.value + " " + node1.next.next.next);
         node1.reverse();
-        System.out.println(node3.value + " " + node3.next.value + " " + node3.next.next.value);
+        System.out.println(node3.value + " " + node3.next.value + " "
+                + node3.next.next.value + " " + node3.next.next.next);
     }
 }
 
