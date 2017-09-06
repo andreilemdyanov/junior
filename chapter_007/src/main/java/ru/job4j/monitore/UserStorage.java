@@ -2,8 +2,8 @@ package ru.job4j.monitore;
 
 import net.jcip.annotations.ThreadSafe;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Class UserStorage.
@@ -17,7 +17,7 @@ public class UserStorage {
     /**
      * Потокобезопасный HashMap.
      */
-    private Map<Integer, User> map = new ConcurrentHashMap<>();
+    private Map<Integer, User> map = new HashMap<>();
 
     /**
      * Геттер пользователя.
@@ -35,7 +35,9 @@ public class UserStorage {
      * @param user пользователь.
      */
     void add(User user) {
-        map.put(user.getId(), user);
+        synchronized (this) {
+            map.put(user.getId(), user);
+        }
     }
 
     /**
@@ -53,7 +55,9 @@ public class UserStorage {
      * @param id пользователь.
      */
     void delete(int id) {
-        map.remove(id);
+        synchronized (this) {
+            map.remove(id);
+        }
     }
 
     /**
@@ -64,8 +68,10 @@ public class UserStorage {
      * @param amount сумма.
      */
     void transfer(int fromId, int toId, int amount) {
-        map.get(fromId).setAmount(map.get(fromId).getAmount() - amount);
-        map.get(toId).setAmount(map.get(toId).getAmount() + amount);
+        synchronized (this) {
+            map.get(fromId).setAmount(map.get(fromId).getAmount() - amount);
+            map.get(toId).setAmount(map.get(toId).getAmount() + amount);
+        }
     }
 
     /**

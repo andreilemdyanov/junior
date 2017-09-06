@@ -32,7 +32,9 @@ public class User {
      * @param amount счет.
      */
     public void setAmount(int amount) {
-        this.amount = amount;
+        synchronized (this) {
+            this.amount = amount;
+        }
     }
 
     /**
