@@ -1,5 +1,6 @@
 package ru.job4j.monitore;
 
+import net.jcip.annotations.GuardedBy;
 import net.jcip.annotations.ThreadSafe;
 
 import java.util.HashMap;
@@ -15,6 +16,10 @@ import java.util.Map;
 @ThreadSafe
 public class UserStorage {
     /**
+     * Объект для синхронизации.
+     */
+    @GuardedBy("this")
+    /**
      * Потокобезопасный HashMap.
      */
     private Map<Integer, User> map = new HashMap<>();
@@ -26,7 +31,9 @@ public class UserStorage {
      * @return пользователь.
      */
     User get(int id) {
-        return map.get(id);
+        synchronized (this) {
+            return map.get(id);
+        }
     }
 
     /**
