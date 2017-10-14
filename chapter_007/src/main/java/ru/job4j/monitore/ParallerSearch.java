@@ -23,64 +23,31 @@ public class ParallerSearch {
     /**
      * Список потоков.
      */
-    private List<Thread> threads = new ArrayList<>();
+    private final List<Thread> threads = new ArrayList<>();
     /**
      * Список файлов, где содержится текст.
      */
-    private List<String> result = new ArrayList<>();
+    private final List<String> result = new ArrayList<>();
 
     /**
-     * Конструктор.
-     * @param root директория для поиска.
-     * @param text искомый текст.
-     * @param exts расширения файлов для поиска.
+     * Метод для запуска поиска.
+     *
+     * @param root директория.
+     * @param text слово.
+     * @param exts расширения.
      */
-    ParallerSearch(String root, String text, List<String> exts) {
-        List<String> list = getAllDirectiories(root);
-        for (String path : list) {
-            File file = new File(path);
-            File[] filesArray = file.listFiles();
-            if (filesArray != null) {
-                for (File d : filesArray) {
-                    for (String ex : exts) {
-                        if (d.getName().endsWith(ex)) {
-                            threads.add(new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        List<String> lines = Files.readAllLines(Paths.get(d.getPath()), Charset.forName("windows-1251"));
-                                        List<String> words = new ArrayList<>();
-                                        for (String g : lines) {
-                                            String[] t = g.split(" ");
-                                            words.addAll(new ArrayList<>(Arrays.asList(t)));
-                                        }
-
-                                        for (String each : words) {
-                                            if (each.equals(text)) {
-                                                result.add(d.getPath());
-                                                break;
-                                            }
-                                        }
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                }
-                            }));
-                        }
-
-                    }
-                }
-            }
-        }
+    public void init(String root, String text, List<String> exts) {
+        List<String> list = this.getAllDirectiories(root);
+        this.searchAllFiles(list, text, exts);
     }
 
     /**
      * Метод возвращает все директории.
+     *
      * @param root директория для поиска.
      * @return список директорий.
      */
-    public List<String> getAllDirectiories(String root) {
+    private List<String> getAllDirectiories(String root) {
         File rootDir = new File(root);
         List<String> directs = new ArrayList<>();
         Queue<File> fileTree = new PriorityQueue<>();
@@ -98,11 +65,60 @@ public class ParallerSearch {
     }
 
     /**
+     * Метод ищет все файлы по директориям.
+     *
+     * @param list список директорий.
+     * @param text слово для поиска.
+     * @param exts расширения файлов.
+     */
+    private void searchAllFiles(List<String> list, String text, List<String> exts) {
+        for (String path : list) {
+            File file = new File(path);
+            File[] filesArray = file.listFiles();
+            if (filesArray != null) {
+                for (File d : filesArray) {
+                    for (String ex : exts) {
+                        if (d.getName().endsWith(ex)) {
+                            synchronized (threads) {
+                                threads.add(new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            List<String> lines = Files.readAllLines(Paths.get(d.getPath()), Charset.forName("windows-1251"));
+                                            List<String> words = new ArrayList<>();
+                                            for (String g : lines) {
+                                                String[] t = g.split(" ");
+                                                words.addAll(new ArrayList<>(Arrays.asList(t)));
+                                            }
+                                            for (String each : words) {
+                                                synchronized (result) {
+                                                    if (each.equals(text)) {
+                                                        result.add(d.getPath());
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Точка входа.
+     *
      * @param args массив строк.
      */
     public static void main(String[] args) {
-        ParallerSearch search = new ParallerSearch("D:\\Прочитанное", "сон", new ArrayList<>(Arrays.asList(".txt", ".fb2", ".doc")));
+        ParallerSearch search = new ParallerSearch();
+        search.init("D:\\Прочитанное", "сон", new ArrayList<>(Arrays.asList(".txt", ".fb2", ".doc")));
         for (Thread a : search.threads) {
             try {
                 a.start();
