@@ -15,14 +15,11 @@ import pro.ru.job4j.list.SimpleQueue;
  * @param <T> параметризованный тип.
  */
 public class ProducerCustomer<T> {
-    /**
-     * Объект для блокировки.
-     */
-    private final Object lock = new Object();
+
     /**
      * Очередь.
      */
-    private SimpleQueue<T> queue = new SimpleQueue<>();
+    private final SimpleQueue<T> queue = new SimpleQueue<>();
     /**
      * Условие для блокировки.
      */
@@ -34,12 +31,12 @@ public class ProducerCustomer<T> {
      * @param a элемент.
      */
     public void put(T a) {
-        synchronized (lock) {
+        synchronized (queue) {
             System.out.printf("%s добавление в очередь\n", Thread.currentThread().getId());
             queue.push(a);
             if (!condition) {
                 System.out.printf("%s блокировка снята\n", Thread.currentThread().getId());
-                lock.notify();
+                queue.notify();
                 condition = true;
             }
         }
@@ -51,13 +48,13 @@ public class ProducerCustomer<T> {
      * @return элемент.
      */
     public T take() {
-        synchronized (lock) {
+        synchronized (queue) {
             if (queue.size() == 0) {
                 System.out.printf("%s смена условия на false\n", Thread.currentThread().getId());
                 condition = false;
                 try {
                     System.out.printf("%s блокировка\n", Thread.currentThread().getId());
-                    lock.wait(10000);
+                    queue.wait(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
