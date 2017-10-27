@@ -32,10 +32,8 @@ public class ProducerCustomer<T> {
      */
     public void put(T a) {
         synchronized (queue) {
-            System.out.printf("%s добавление в очередь\n", Thread.currentThread().getId());
             queue.push(a);
             if (!condition) {
-                System.out.printf("%s блокировка снята\n", Thread.currentThread().getId());
                 queue.notify();
                 condition = true;
             }
@@ -50,20 +48,14 @@ public class ProducerCustomer<T> {
     public T take() {
         synchronized (queue) {
             if (queue.size() == 0) {
-                System.out.printf("%s смена условия на false\n", Thread.currentThread().getId());
                 condition = false;
                 try {
-                    System.out.printf("%s блокировка\n", Thread.currentThread().getId());
                     queue.wait(10000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
-            T a = queue.pop();
-            if (condition) {
-                System.out.printf("%s удаление из очереди\n", Thread.currentThread().getId());
-            }
-            return a;
+            return queue.pop();
         }
     }
 

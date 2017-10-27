@@ -1,110 +1,117 @@
 package ru.job4j.monitore;
 
+import ru.job4j.wait.ProducerCustomer;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Class ParallerSearch.
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 10.10.2017
+ * @since 28.10.2017
  */
 public class ParallerSearch {
     /**
      * Список потоков.
      */
-    private final List<Thread> threads = new ArrayList<>();
+    private final ProducerCustomer<File> queue;
     /**
-     * Список файлов, где содержится текст.
+     * Муляж для окончания.
      */
-    private final List<String> result = new ArrayList<>();
+    private final File dummy;
+    /**
+     * Количество потоков.
+     */
+    private final int searchThreads;
+    /**
+     * Лист результат.
+     */
+    private final List<String> result;
 
     /**
-     * Метод для запуска поиска.
-     *
-     * @param root директория.
-     * @param text слово.
-     * @param exts расширения.
+     * Конструктор.
      */
-    public void init(String root, String text, List<String> exts) {
-        List<String> list = this.getAllDirectiories(root);
-        this.searchAllFiles(list, text, exts);
+    public ParallerSearch() {
+        queue = new ProducerCustomer<>();
+        dummy = new File("");
+        searchThreads = 100;
+        result = new ArrayList<>();
     }
 
     /**
-     * Метод возвращает все директории.
-     *
-     * @param root директория для поиска.
-     * @return список директорий.
+     * Точка входа.
+     * @param args массив строк.
+     * @throws InterruptedException исключение.
      */
-    private List<String> getAllDirectiories(String root) {
-        File rootDir = new File(root);
-        List<String> directs = new ArrayList<>();
-        Queue<File> fileTree = new PriorityQueue<>();
+    public static void main(String[] args) throws InterruptedException {
+        ParallerSearch p = new ParallerSearch();
+        try (Scanner in = new Scanner(System.in)) {
+            System.out.print("Введите путь к папке : ");
+            String directory = in.nextLine();
+            System.out.print("Введите слово для поиска : ");
+            String keyword = in.nextLine();
+            System.out.print("Введите расширения файлов для поиска (через запятую) : ");
+            List<String> exts = new ArrayList<>(Arrays.asList(in.nextLine().replaceAll(" ", "").split(",")));
 
-        Collections.addAll(fileTree, rootDir.listFiles());
+            Runnable enumerator = () -> {
+                try {
+                    p.enumerate(new File(directory), exts);
+                    p.queue.put(p.dummy);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            };
 
-        while (!fileTree.isEmpty()) {
-            File currentFile = fileTree.remove();
-            if (currentFile.isDirectory()) {
-                Collections.addAll(fileTree, currentFile.listFiles());
-                directs.add(currentFile.getAbsolutePath());
-            }
-        }
-        return directs;
-    }
-
-    /**
-     * Метод ищет все файлы по директориям.
-     *
-     * @param list список директорий.
-     * @param text слово для поиска.
-     * @param exts расширения файлов.
-     */
-    private void searchAllFiles(List<String> list, String text, List<String> exts) {
-        for (String path : list) {
-            File file = new File(path);
-            File[] filesArray = file.listFiles();
-            if (filesArray != null) {
-                for (File d : filesArray) {
-                    for (String ex : exts) {
-                        if (d.getName().endsWith(ex)) {
-                            synchronized (threads) {
-                                threads.add(new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            List<String> lines = Files.readAllLines(Paths.get(d.getPath()), Charset.forName("windows-1251"));
-                                            List<String> words = new ArrayList<>();
-                                            for (String g : lines) {
-                                                String[] t = g.split(" ");
-                                                words.addAll(new ArrayList<>(Arrays.asList(t)));
-                                            }
-                                            for (String each : words) {
-                                                synchronized (result) {
-                                                    if (each.equals(text)) {
-                                                        result.add(d.getPath());
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }));
+            Thread a = new Thread(enumerator);
+            a.start();
+            a.join();
+            for (int i = 1; i <= p.searchThreads; i++) {
+                Runnable searcher = () -> {
+                    try {
+                        boolean done = false;
+                        while (!done) {
+                            File file = p.queue.take();
+                            if (file == p.dummy) {
+                                p.queue.put(file);
+                                done = true;
+                            } else {
+                                p.search(file, keyword);
                             }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                };
+                Thread b = new Thread(searcher);
+                b.start();
+                b.join();
+
+            }
+        }
+        System.out.println(p.result);
+    }
+
+    /**
+     * Метод помещает файл в очередь.
+     * @param directory директория.
+     * @param exts расширения.
+     * @throws InterruptedException исключение.
+     */
+    public void enumerate(File directory, List<String> exts) throws InterruptedException {
+        File[] files = directory.listFiles();
+        for (File file : files) {
+            for (String ex : exts) {
+                if (file.getName().endsWith(ex)) {
+                    if (file.isDirectory()) {
+                        enumerate(file, exts);
+                    } else {
+                        queue.put(file);
                     }
                 }
             }
@@ -112,21 +119,32 @@ public class ParallerSearch {
     }
 
     /**
-     * Точка входа.
-     *
-     * @param args массив строк.
+     * Поиск слова в файле.
+     * @param file файл.
+     * @param keyword слово.
+     * @throws IOException исключение.
      */
-    public static void main(String[] args) {
-        ParallerSearch search = new ParallerSearch();
-        search.init("D:\\Прочитанное", "сон", new ArrayList<>(Arrays.asList(".txt", ".fb2", ".doc")));
-        for (Thread a : search.threads) {
-            try {
-                a.start();
-                a.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+    public void search(File file, String keyword) throws IOException {
+        List<String> lines = new ArrayList<>();
+        List<String> words = new ArrayList<>();
+        try (Scanner in = new Scanner(file, "windows-1251")) {
+            while (in.hasNextLine()) {
+                String line = in.nextLine();
+                lines.add(line);
+            }
+            for (String g : lines) {
+                String[] t = (g + " ").split("\\p{P}?[ \\t\\n\\r]+");
+                words.addAll(new ArrayList<>(Arrays.asList(t)));
+            }
+            for (String each : words) {
+                synchronized (result) {
+                    if (each.equals(keyword)) {
+                        result.add(file.getPath());
+                        break;
+                    }
+                }
             }
         }
-        System.out.println(search.result);
     }
 }
+
