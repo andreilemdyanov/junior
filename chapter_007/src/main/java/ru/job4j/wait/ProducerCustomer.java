@@ -12,6 +12,7 @@ import pro.ru.job4j.list.SimpleQueue;
 
 /**
  * ProducerCustomer.
+ *
  * @param <T> параметризованный тип.
  */
 public class ProducerCustomer<T> {
@@ -24,6 +25,15 @@ public class ProducerCustomer<T> {
      * Условие для блокировки.
      */
     private boolean condition = true;
+
+    /**
+     * Размер очереди.
+     *
+     * @return размер.
+     */
+    public int size() {
+        return queue.size();
+    }
 
     /**
      * Добавление элемента в очередь.
