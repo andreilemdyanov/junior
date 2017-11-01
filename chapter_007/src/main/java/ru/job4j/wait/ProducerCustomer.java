@@ -21,10 +21,6 @@ public class ProducerCustomer<T> {
      * Очередь.
      */
     private final SimpleQueue<T> queue = new SimpleQueue<>();
-    /**
-     * Условие для блокировки.
-     */
-    private boolean condition = true;
 
     /**
      * Размер очереди.
@@ -36,6 +32,15 @@ public class ProducerCustomer<T> {
     }
 
     /**
+     * Очередь пуста?
+     *
+     * @return да/нет.
+     */
+    public boolean isEmpty() {
+        return this.size() == 0;
+    }
+
+    /**
      * Добавление элемента в очередь.
      *
      * @param a элемент.
@@ -43,9 +48,8 @@ public class ProducerCustomer<T> {
     public void put(T a) {
         synchronized (queue) {
             queue.push(a);
-            if (!condition) {
+            if (!this.isEmpty()) {
                 queue.notify();
-                condition = true;
             }
         }
     }
@@ -57,8 +61,7 @@ public class ProducerCustomer<T> {
      */
     public T take() {
         synchronized (queue) {
-            if (queue.size() == 0) {
-                condition = false;
+            if (this.isEmpty()) {
                 try {
                     queue.wait(10000);
                 } catch (InterruptedException e) {

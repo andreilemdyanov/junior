@@ -36,7 +36,7 @@ public class ThreadPool {
      * @throws InterruptedException исключение.
      */
     public void init() throws InterruptedException {
-        while (thpool.size() != 0) {
+        while (!thpool.isEmpty()) {
             for (int j = 0; j < pool.length; j++) {
                 pool[j] = new Thread(thpool.take());
                 pool[j].start();
