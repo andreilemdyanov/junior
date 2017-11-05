@@ -1,0 +1,43 @@
+CREATE DATABASE system_applications;
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  login CHARACTER VARYING(100) UNIQUE,
+  password CHARACTER VARYING(100),
+  role CHARACTER VARYING(100),
+  create_date TIMESTAMP
+);
+
+CREATE TABLE applications (
+  id SERIAL PRIMARY KEY,
+  user_owner CHARACTER VARYING(100) REFERENCES users(login),
+  state CHARACTER VARYING(100),
+  category CHARACTER VARYING(100),
+  comments CHARACTER VARYING(10000),
+  files CHARACTER VARYING(10000)
+);
+
+CREATE TABLE roles (
+  id SERIAL PRIMARY KEY,
+  name CHARACTER VARYING(100),
+  rights CHARACTER VARYING(10000)
+);
+
+INSERT INTO users (login, password, role, create_date)
+VALUES ('andrei', '123', 'admin', '2017-05-11 00:59:55');
+
+INSERT INTO users (login, password, role, create_date)
+VALUES ('alexandr', '456', 'visitor', '2017-05-11 01:42:15');
+
+INSERT INTO applications (user_owner, state, category, comments, files)
+VALUES ('andrei', 'ready', 'main', 'some words about application', 'book.pdf, mouse.txt');
+
+INSERT INTO applications (user_owner, state, category, comments, files)
+VALUES ('alexandr', 'not ready', 'other', 'some other words', 'comp.pdf, cup.txt');
+
+INSERT INTO roles (name, rights) VALUES ('admin', 'full access');
+
+INSERT INTO roles (name, rights) VALUES ('visitor', 'write comments, watch files');
+
+
+
