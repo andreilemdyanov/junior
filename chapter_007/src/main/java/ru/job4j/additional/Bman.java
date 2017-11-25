@@ -20,7 +20,6 @@ public class Bman {
         this.lock = lock;
         this.x = x;
         this.y = y;
-        this.doSome();
     }
 
     public void doSome() {
@@ -28,6 +27,10 @@ public class Bman {
             lock.tryLock(500, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            if (lock.isLocked()) {
+                lock.unlock();
+            }
         }
     }
 }

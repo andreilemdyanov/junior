@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class GameBoard {
 
-    private final ReentrantLock[][] board = new ReentrantLock[10][10];
+    private final ReentrantLock[][] board = new ReentrantLock[100][100];
     private Bman bman;
 
     public GameBoard() {
@@ -22,6 +22,7 @@ public class GameBoard {
             }
         }
         bman = new Bman(board[0][0], 0, 0);
+        bman.doSome();
     }
 
 
@@ -40,10 +41,24 @@ public class GameBoard {
                 bman.y += 1;
             }
         }
-        if (bman.x >= 0 && bman.y >= 0 && bman.x < board.length && bman.y < board.length) {
-            System.out.printf("Bman - %s : %s\n", bman.x, bman.y);
-            bman = new Bman(board[bman.x][bman.y], bman.x, bman.y);
+        this.createBman();
+    }
+
+    private void createBman() {
+        if (bman.x == board.length) {
+            bman.x = bman.x - 2;
+        } else if (bman.x == -1) {
+            bman.x = bman.x + 2;
+        } else if (bman.y == board.length) {
+            bman.y = bman.y - 2;
+        } else if (bman.y == -1) {
+            bman.y = bman.y + 2;
         }
+        if (bman.x >= 0 && bman.y >= 0 && bman.x < board.length && bman.y < board.length) {
+            bman = new Bman(board[bman.x][bman.y], bman.x, bman.y);
+            bman.doSome();
+        }
+        System.out.printf("Bman - %s : %s\n", bman.x, bman.y);
     }
 
     public static void main(String[] args) {
