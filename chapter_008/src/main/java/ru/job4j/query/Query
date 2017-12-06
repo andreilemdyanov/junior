@@ -1,0 +1,69 @@
+CREATE DATABASE Prod;
+
+CREATE TABLE type (
+  id   SERIAL PRIMARY KEY,
+  name CHARACTER VARYING(100)
+);
+
+CREATE TABLE product (
+  id           SERIAL PRIMARY KEY,
+  name         CHARACTER VARYING(100),
+  type_id      INT NOT NULL,
+  CONSTRAINT type_id_fk
+  FOREIGN KEY (type_id) REFERENCES type (id),
+  expired_date TIMESTAMP,
+  price        INT NOT NULL
+);
+
+INSERT INTO type (name) VALUES ('СЫР'), ('МОЛОКО'), ('МЯСО'), ('РЫБА');
+
+INSERT INTO product (name, type_id, expired_date, price)
+VALUES ('Бри', 1, '2018-01-02 00:00:00', 599), ('Рокфор', 1, '2018-02-01 00:00:00', 708),
+  ('Буренка', 2, '2018-01-28 20:00:00', 60), ('Рагу', 3, '2019-01-01 00:00:00', 399),
+  ('Сардины', 4, '2018-10-01 00:00:00', 205);
+
+INSERT INTO product (name, type_id, expired_date, price)
+VALUES ('мороженное крем-брюле', 2, '2018-01-11 00:40:00', 27);
+
+--1. Написать запрос получение всех продуктов с типом "СЫР"
+SELECT p.name
+FROM product AS p
+  INNER JOIN type AS t ON (t.id = p.type_id)
+WHERE t.name = 'СЫР';
+
+--2. Написать запрос получения всех продуктов, у кого в имени есть слово "мороженное"
+SELECT name
+FROM product
+WHERE name LIKE '%мороженное%';
+
+--3. Написать запрос, который выводит все продукты, срок годности которых заканчивается в следующем месяце.
+SELECT name
+FROM product
+WHERE expired_date BETWEEN '2018-01-01 00:00:00' AND '2018-01-31 23:59:59';
+
+--4. Написать запрос, который вывод самый дорогой продукт.
+SELECT name
+FROM product
+WHERE price = (SELECT max(price)
+               FROM product);
+
+--5. Написать запрос, который выводит количество всех продуктов определенного типа.
+SELECT
+  t.name,
+  count(*)
+FROM product AS p
+  INNER JOIN type AS t ON (p.type_id = t.id)
+GROUP BY t.name;
+
+--6. Написать запрос получение всех продуктов с типом "СЫР" и "МОЛОКО"
+SELECT p.name
+FROM product AS p
+  INNER JOIN type AS t ON (p.type_id = t.id)
+WHERE t.name = 'СЫР' OR t.name = 'МОЛОКО';
+
+--7. Написать запрос, который выводит тип продуктов, которых осталось меньше 10 штук.
+SELECT t.name
+FROM type AS t
+  INNER JOIN product AS p ON (t.id = p.type_id)
+GROUP BY t.name
+HAVING count(*) < 10;
