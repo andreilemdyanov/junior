@@ -1,43 +1,92 @@
 CREATE DATABASE system_applications;
 
-CREATE TABLE users (
-  id          SERIAL PRIMARY KEY,
-  login       CHARACTER VARYING(100) UNIQUE,
-  password    CHARACTER VARYING(100),
-  role        CHARACTER VARYING(100),
-  create_date TIMESTAMP
+CREATE TABLE categories (
+  cat_id   SERIAL PRIMARY KEY,
+  cat_name CHARACTER VARYING(100)
 );
 
-CREATE TABLE applications (
-  id         SERIAL PRIMARY KEY,
-  user_owner CHARACTER VARYING(100) REFERENCES users (login),
-  state      CHARACTER VARYING(100),
-  category   CHARACTER VARYING(100),
-  comments   CHARACTER VARYING(10000),
-  files      CHARACTER VARYING(10000)
+CREATE TABLE statuses (
+  status_id SERIAL PRIMARY KEY,
+  name      CHARACTER VARYING(100) NOT NULL
+);
+
+CREATE TABLE rules (
+  rule_id SERIAL PRIMARY KEY,
+  text    CHARACTER VARYING(1000) NOT NULL
 );
 
 CREATE TABLE roles (
-  id     SERIAL PRIMARY KEY,
-  name   CHARACTER VARYING(100) REFERENCES users (role),
-  rights CHARACTER VARYING(10000)
+  role_id SERIAL PRIMARY KEY,
+  name    CHARACTER VARYING(100) NOT NULL
 );
 
-INSERT INTO users (login, password, role, create_date)
-VALUES ('andrei', '123', 'admin', '2017-05-11 00:59:55');
+CREATE TABLE rules_role (
+  role_id INT NOT NULL,
+  CONSTRAINT roles_role_id_fk
+  FOREIGN KEY (role_id) REFERENCES roles (role_id),
+  rule_id INT NOT NULL,
+  CONSTRAINT rules_rule_id_fk
+  FOREIGN KEY (rule_id) REFERENCES rules (rule_id)
+);
 
-INSERT INTO users (login, password, role, create_date)
-VALUES ('alexandr', '456', 'visitor', '2017-05-11 01:42:15');
+CREATE TABLE items (
+  item_id   SERIAL PRIMARY KEY,
+  cat_id    INT NOT NULL,
+  CONSTRAINT categories_cat_id_fk
+  FOREIGN KEY (cat_id) REFERENCES categories (cat_id),
+  status_id INT NOT NULL,
+  CONSTRAINT statuses_status_id_fk
+  FOREIGN KEY (status_id) REFERENCES statuses (status_id)
+);
 
-INSERT INTO applications (user_owner, state, category, comments, files)
-VALUES ('andrei', 'ready', 'main', 'some words about application', 'book.pdf, mouse.txt');
+CREATE TABLE comments (
+  comment_id SERIAL PRIMARY KEY,
+  text       CHARACTER VARYING(10000) NOT NULL,
+  item_id    INT                      NOT NULL,
+  CONSTRAINT items_item_id_fk
+  FOREIGN KEY (item_id) REFERENCES items (item_id)
+);
 
-INSERT INTO applications (user_owner, state, category, comments, files)
-VALUES ('alexandr', 'not ready', 'other', 'some other words', 'comp.pdf, cup.txt');
+CREATE TABLE attaches (
+  attach_id SERIAL PRIMARY KEY,
+  name      CHARACTER VARYING(100) NOT NULL,
+  item_id   INT                    NOT NULL,
+  CONSTRAINT items_item_id_fk
+  FOREIGN KEY (item_id) REFERENCES items (item_id)
+);
 
-INSERT INTO roles (name, rights) VALUES ('admin', 'full access');
+CREATE TABLE users (
+  user_id  SERIAL PRIMARY KEY,
+  login    CHARACTER VARYING(100) NOT NULL,
+  password CHARACTER VARYING(100) NOT NULL,
+  role_id  INT                    NOT NULL,
+  CONSTRAINT roles_role_id_fk
+  FOREIGN KEY (role_id) REFERENCES roles (role_id),
+  item_id  INT                    NOT NULL,
+  CONSTRAINT items_item_id_fk
+  FOREIGN KEY (item_id) REFERENCES items (item_id)
+);
 
-INSERT INTO roles (name, rights) VALUES ('visitor', 'write comments, watch files');
+INSERT INTO categories (cat_name) VALUES ('Срочная'), ('Обычная'), ('Неважная');
 
+INSERT INTO statuses (name) VALUES ('Выполнена'), ('В процессе'), ('Ожидание');
+
+INSERT INTO rules (text)
+VALUES ('Добавление комментария к заявке'), ('Редактирование профилей'), ('Просмотр информации'),
+  ('Удаление пользователя'), ('Изменение роли пользователя');
+
+INSERT INTO roles (name) VALUES ('Админ'), ('Пользователь'), ('Бан');
+
+INSERT INTO rules_role (role_id, rule_id) VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (2, 1), (2, 3), (3, 3);
+
+INSERT INTO items (cat_id, status_id) VALUES (1, 3), (3, 2), (2, 1);
+
+INSERT INTO comments (text, item_id)
+VALUES ('Глянь приложенный файл', 2), ('Неплохо?', 2), ('Хотелось бы побыстрее', 1);
+
+INSERT INTO attaches (name, item_id) VALUES ('file.txt', 1), ('some.pdf', 1), ('gimcat.rtf', 2), ('table.txt', 3);
+
+INSERT INTO users (login, password, role_id, item_id)
+VALUES ('andrei', '123', 1, 2), ('alex', '456', 2, 3), ('bob', '556', 3, 1);
 
 
