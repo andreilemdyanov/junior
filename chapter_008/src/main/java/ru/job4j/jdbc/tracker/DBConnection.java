@@ -31,14 +31,15 @@ public class DBConnection {
         String password = "gh38Jo";
         try {
             conn = DriverManager.getConnection(url, username, password);
-            Statement stat = conn.createStatement();
-            String command = "CREATE TABLE IF NOT EXISTS item("
-                    + " id SERIAL PRIMARY KEY,"
-                    + " name VARCHAR(100),"
-                    + " description VARCHAR(1000),"
-                    + " create_date TIMESTAMP"
-                    + ");";
-            stat.executeUpdate(command);
+            try (Statement stat = conn.createStatement()) {
+                String command = "CREATE TABLE IF NOT EXISTS item("
+                        + " id SERIAL PRIMARY KEY,"
+                        + " name VARCHAR(100),"
+                        + " description VARCHAR(1000),"
+                        + " create_date TIMESTAMP"
+                        + ");";
+                stat.executeUpdate(command);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

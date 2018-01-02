@@ -1,9 +1,9 @@
 package ru.job4j.jdbc.tracker;
 
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.util.ArrayList;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Class Tracker.
@@ -16,7 +16,7 @@ public class Tracker {
     /**
      * Поле соединение.
      */
-    DBConnection conn;
+    private DBConnection conn;
 
     /**
      * Конструктор default.
@@ -54,6 +54,7 @@ public class Tracker {
             rs.next();
             item.setCreate(rs.getTimestamp("create_date"));
             item.setId(rs.getInt("id"));
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -78,6 +79,7 @@ public class Tracker {
             ResultSet rs1 = pstmt1.executeQuery();
             rs1.next();
             item.setCreate(rs1.getTimestamp("create_date"));
+            rs1.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -112,6 +114,7 @@ public class Tracker {
             pstmt.setString(1, name);
             ResultSet rs = pstmt.executeQuery();
             result = this.generateItem(rs);
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -137,6 +140,7 @@ public class Tracker {
             item.setDesc(rs.getString("description"));
             item.setCreate(rs.getTimestamp("create_date"));
             result = item;
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -154,6 +158,7 @@ public class Tracker {
         try (PreparedStatement pstmt = conn.getConn().prepareStatement(sql)) {
             ResultSet rs = pstmt.executeQuery();
             result = this.generateItem(rs);
+            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -177,6 +182,7 @@ public class Tracker {
             item.setCreate(rs.getTimestamp("create_date"));
             list.add(item);
         }
+        rs.close();
         return list;
     }
 }
