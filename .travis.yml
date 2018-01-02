@@ -4,7 +4,6 @@ services:
   - postgresql
 before_script:
   - psql -c "CREATE DATABASE tracker;" -U postgres
-  - psql -c "CREATE USER postgres WITH PASSWORD 'gh38Jo';" -U postgres
 after_success:
   - bash <(curl -s https://codecov.io/bash)
 
