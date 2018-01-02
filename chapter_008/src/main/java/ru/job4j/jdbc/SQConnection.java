@@ -20,7 +20,16 @@ import java.sql.*;
 public class SQConnection {
 
     private SQLite sqlite;
-    private Connection conn;
+
+    public Connection getCon() {
+        Connection conn = null;
+        try {
+            conn = DriverManager.getConnection(sqlite.getUrl());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return conn;
+    }
 
     public SQConnection(SQLite sqlite) {
         this.sqlite = sqlite;
@@ -32,25 +41,11 @@ public class SQConnection {
      * @throws SQLException исключения.
      */
     public void init() throws SQLException {
-        try {
-            conn = DriverManager.getConnection(sqlite.getUrl());
+        try (Connection conn = this.getCon()) {
             if (conn != null) {
-                DatabaseMetaData meta = conn.getMetaData();
-
-                System.out.printf("The driver name is %s\n", meta.getDriverName());
-                System.out.println("A new database has been created.");
-
                 this.insert();
                 this.marshall();
                 this.convertXml();
-            }
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
             }
         }
     }
@@ -61,34 +56,37 @@ public class SQConnection {
      * @throws SQLException исключения.
      */
     private void insert() throws SQLException {
-        try (Statement stat = conn.createStatement()) {
-            System.out.println("Start table");
-            String command = "CREATE TABLE IF NOT EXISTS TEST(\n" + " FIELD SMALLINT\n" + ");";
-            stat.execute(command);
-            String command1 = "DELETE FROM TEST;";
-            stat.execute(command1);
-            String command3 = "INSERT INTO TEST VALUES (?)";
-            PreparedStatement pstmt = conn.prepareStatement(command3);
-            conn.setAutoCommit(false);
-            for (int i = 1; i <= sqlite.getN(); i++) {
-                pstmt.setInt(1, i);
-                pstmt.addBatch();
+        String command = "CREATE TABLE IF NOT EXISTS TEST (FIELD SMALLINT)";
+        String command1 = "DELETE FROM TEST";
+        String command3 = "INSERT INTO TEST VALUES (?)";
+        try (Connection conn = this.getCon()) {
+            try (Statement stat = conn.createStatement()) {
+                stat.executeUpdate(command);
+                stat.executeUpdate(command1);
+                PreparedStatement pstmt = conn.prepareStatement(command3);
+                conn.setAutoCommit(false);
+                for (int i = 1; i <= sqlite.getN(); i++) {
+                    pstmt.setInt(1, i);
+                    pstmt.addBatch();
+                }
+                pstmt.executeBatch();
+                conn.commit();
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.rollback();
+                conn.setAutoCommit(true);
             }
-            pstmt.executeBatch();
-            conn.commit();
         }
-        System.out.println("Execute table");
     }
 
     /**
      * Метод для создания Xml файла, использую JAXB.
-     *
-     * @throws SQLException исключения.
      */
-    private void marshall() throws SQLException {
-        System.out.println("Start create 1.xml");
+    private void marshall() {
         String sql = "SELECT FIELD FROM TEST";
-        try (Statement stat = conn.createStatement();
+        try (Connection conn = this.getCon();
+             Statement stat = conn.createStatement();
              ResultSet rs = stat.executeQuery(sql)) {
             Entries entries = new Entries();
             while ((rs.next())) {
@@ -100,8 +98,7 @@ public class SQConnection {
             Marshaller marshallObj = jContext.createMarshaller();
             marshallObj.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
             marshallObj.marshal(entries,
-                    new FileOutputStream("C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/1.xml"));
-            System.out.println("Finish create 1.xml");
+                    new FileOutputStream("chapter_008/src/main/java/ru/job4j/jdbc/1.xml"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,14 +106,12 @@ public class SQConnection {
 
     private void convertXml() {
         try {
-            System.out.println("XSLT start");
             TransformerFactory tf = TransformerFactory.newInstance();
             Transformer transformer = tf.newTransformer(
-                    new StreamSource("C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/style.xsl"));
+                    new StreamSource("chapter_008/src/main/java/ru/job4j/jdbc/style.xsl"));
             transformer.transform(
-                    new StreamSource("C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/1.xml"),
-                    new StreamResult("C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/2.xml"));
-            System.out.println("XSLT complete");
+                    new StreamSource("chapter_008/src/main/java/ru/job4j/jdbc/1.xml"),
+                    new StreamResult("chapter_008/src/main/java/ru/job4j/jdbc/2.xml"));
         } catch (TransformerException e) {
             e.printStackTrace();
         }
@@ -125,7 +120,7 @@ public class SQConnection {
     public static void main(String[] args) {
         long timestart = System.currentTimeMillis();
         SQLite sqLite = new SQLite();
-        sqLite.setUrl("jdbc:sqlite:C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/data.db");
+        sqLite.setUrl("jdbc:sqlite:chapter_008/src/main/java/ru/job4j/jdbc/data.db");
         sqLite.setN(1000000);
         SQConnection sqConnection = new SQConnection(sqLite);
         try {
@@ -135,10 +130,8 @@ public class SQConnection {
                 t.printStackTrace();
             }
         }
-        System.out.println("Start SaxP");
-        SaxP saxP = new SaxP("C:/projects/junior/chapter_008/src/main/java/ru/job4j/jdbc/2.xml");
+        SaxP saxP = new SaxP("chapter_008/src/main/java/ru/job4j/jdbc/2.xml");
         saxP.init();
-        System.out.println("Finish SaxP");
         long endtime = System.currentTimeMillis() - timestart;
         System.out.printf("time = %s ms", endtime);
     }

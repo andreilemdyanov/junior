@@ -10,6 +10,7 @@ package ru.job4j.jdbc;
 public class SQLite {
 
     private String url;
+
     private int n;
 
     public SQLite() {
