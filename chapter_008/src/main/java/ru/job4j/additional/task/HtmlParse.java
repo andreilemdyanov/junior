@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class HtmlParse {
 
-    private static final Logger log = LoggerFactory.getLogger(HtmlParse.class);
+    private static final Logger LOG = LoggerFactory.getLogger(HtmlParse.class);
 
     private DBWork dbWork;
 
@@ -46,9 +46,9 @@ public class HtmlParse {
                 try {
                     work();
                 } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                 } catch (ParseException e) {
-                    log.error(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                 }
             }
         }, 0, 24, TimeUnit.HOURS);
@@ -63,9 +63,9 @@ public class HtmlParse {
                 try {
                     work();
                 } catch (IOException e) {
-                    log.error(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                 } catch (ParseException e) {
-                    log.error(e.getMessage(), e);
+                    LOG.error(e.getMessage(), e);
                 }
             }
         }, 0, hours, TimeUnit.HOURS);
@@ -75,7 +75,7 @@ public class HtmlParse {
 
         String date = element.select(".altCol").get(1).text();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yy, HH:mm");//задаю формат даты
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yy, HH:mm");
 
         Calendar cal;
         if (date.contains("сегодня")) {
@@ -93,7 +93,7 @@ public class HtmlParse {
             try {
                 date1 = formatter.parse(date);
             } catch (ParseException e) {
-                log.error(e.getMessage(), e);
+                LOG.error(e.getMessage(), e);
             }
             cal.setTime(date1);
         }
@@ -181,10 +181,10 @@ public class HtmlParse {
         dbWork.createNewTables();
         if (this.dbWork.getLastLaunch().get(Calendar.YEAR) == 1970) {
             System.out.println(this.scanHtmlPerYear());
-            log.info("Добавлены вакансии с начала года.");
+            LOG.info("Добавлены вакансии с начала года.");
         } else {
             System.out.println(this.scanHtmlPerDay());
-            log.info("Добавлены вакансии за последний день.");
+            LOG.info("Добавлены вакансии за последний день.");
         }
         dbWork.setLastLaunch();
     }

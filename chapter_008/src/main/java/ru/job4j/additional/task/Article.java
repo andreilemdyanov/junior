@@ -67,11 +67,19 @@ class Article {
 
     @Override
     public String toString() {
-        return "Article{" +
-                "author='" + author + '\'' +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", time=" + time +
-                '}' + '\n';
+        return "Article{"
+                + "author='"
+                + author
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", url='"
+                + url
+                + '\''
+                + ", time="
+                + time
+                + '}'
+                + '\n';
     }
 }

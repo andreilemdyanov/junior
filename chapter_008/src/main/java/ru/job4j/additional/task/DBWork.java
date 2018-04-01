@@ -17,7 +17,7 @@ import java.util.Calendar;
  */
 public class DBWork {
 
-    private static final Logger log = LoggerFactory.getLogger(DBWork.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DBWork.class);
 
     private int count = 0;
 
@@ -29,7 +29,7 @@ public class DBWork {
                 settings.load(io);
             }
         } catch (IOException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         String url = settings.getValue("DB.url");
         String name = settings.getValue("DB.username");
@@ -40,7 +40,7 @@ public class DBWork {
             conn = DriverManager.getConnection(url,
                     name, password);
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         return conn;
     }
@@ -50,25 +50,25 @@ public class DBWork {
             try (Connection conn = getConnection();
                  Statement stat = conn.createStatement()) {
 
-                String command1 = "CREATE TABLE IF NOT EXISTS authors (" +
-                        "id SERIAL PRIMARY KEY," +
-                        "name VARCHAR(1000) UNIQUE " +
-                        ");";
+                String command1 = "CREATE TABLE IF NOT EXISTS authors ("
+                        + "id SERIAL PRIMARY KEY,"
+                        + "name VARCHAR(1000) UNIQUE"
+                        + ");";
 
-                String command2 = "CREATE TABLE IF NOT EXISTS vacancies (" +
-                        " id SERIAL PRIMARY KEY," +
-                        " name VARCHAR(1000) NOT NULL UNIQUE, " +
-                        " url VARCHAR(1000) NOT NULL," +
-                        " description TEXT NOT NULL," +
-                        " timeCreate TIMESTAMP," +
-                        " author_id INT NOT NULL," +
-                        " CONSTRAINT authors_id_fk" +
-                        " FOREIGN KEY (author_id) REFERENCES authors (id));";
+                String command2 = "CREATE TABLE IF NOT EXISTS vacancies ("
+                        + "id SERIAL PRIMARY KEY,"
+                        + "name VARCHAR(1000) NOT NULL UNIQUE,"
+                        + "url VARCHAR(1000) NOT NULL,"
+                        + "description TEXT NOT NULL,"
+                        + "timeCreate TIMESTAMP,"
+                        + "author_id INT NOT NULL,"
+                        + "CONSTRAINT authors_id_fk"
+                        + " FOREIGN KEY (author_id) REFERENCES authors (id));";
 
-                String command3 = "CREATE TABLE IF NOT EXISTS launch_timepoints (" +
-                        " id SERIAL PRIMARY KEY," +
-                        " time TIMESTAMP" +
-                        ");";
+                String command3 = "CREATE TABLE IF NOT EXISTS launch_timepoints ("
+                        + " id SERIAL PRIMARY KEY,"
+                        + " time TIMESTAMP"
+                        + ");";
 
                 stat.executeUpdate(command1);
                 stat.executeUpdate(command2);
@@ -85,7 +85,7 @@ public class DBWork {
             }
 
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
 
     }
@@ -98,15 +98,15 @@ public class DBWork {
                 psmt.executeUpdate();
             }
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
     }
 
     public void insertNewVacanci(Article art) {
         try {
             try (Connection conn = getConnection();
-                 PreparedStatement psmt2 = conn.prepareStatement("INSERT INTO vacancies(name, url, description, timeCreate, author_id) " +
-                         "VALUES (?,?,?,?,?)");
+                 PreparedStatement psmt2 = conn.prepareStatement("INSERT INTO vacancies(name, url, description, timeCreate, author_id) "
+                         + "VALUES (?,?,?,?,?)");
                  PreparedStatement stat = conn.prepareStatement("SELECT id FROM authors WHERE authors.name = ?")) {
                 stat.setString(1, art.getAuthor());
                 ResultSet rs = stat.executeQuery();
@@ -123,7 +123,7 @@ public class DBWork {
                 psmt2.executeUpdate();
             }
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
     }
 
@@ -139,7 +139,7 @@ public class DBWork {
                 }
             }
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
         return cal;
     }
@@ -156,7 +156,7 @@ public class DBWork {
                 stat.executeUpdate();
             }
         } catch (SQLException e) {
-            log.error(e.getMessage(), e);
+            LOG.error(e.getMessage(), e);
         }
     }
 }
