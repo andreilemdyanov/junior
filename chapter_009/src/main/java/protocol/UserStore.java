@@ -1,8 +1,11 @@
 package protocol;
 
+import config.Settings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,14 +22,8 @@ public class UserStore {
     private static final Logger LOG = LoggerFactory.getLogger(UserStore.class);
 
     private static final UserStore INSTANCE = new UserStore();
-    private String url;
-    private String username;
-    private String password;
 
     private UserStore() {
-        url = "jdbc:postgresql://localhost:5432/userStore";
-        username = "postgres";
-        password = "gh38Jo";
     }
 
     public static UserStore getInstance() {
@@ -34,15 +31,27 @@ public class UserStore {
     }
 
     private Connection getConn() {
-        Connection conn = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-        } catch (ClassNotFoundException e) {
+        Settings settings = new Settings();
+        ClassLoader loader = Settings.class.getClassLoader();
+        try (InputStream io = loader.getResourceAsStream("app.properties")) {
+            settings.load(io);
+            Class.forName("DB.driver");
+        } catch (IOException | ClassNotFoundException e) {
             LOG.error(e.getMessage(), e);
         }
+        String url = settings.getValue("DB.url");
+        String name = settings.getValue("DB.username");
+        String password = settings.getValue("DB.password");
+
+        Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, username, password);
-            Statement stat = conn.createStatement();
+            conn = DriverManager.getConnection(url,
+                    name, password);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+        try
+                (Statement stat = conn.createStatement()) {
             String command = "CREATE TABLE IF NOT EXISTS users("
                     + " id SERIAL PRIMARY KEY,"
                     + " name VARCHAR(100) NOT NULL ,"
@@ -58,12 +67,10 @@ public class UserStore {
     }
 
     public List<User> getAllUsers() {
-        Connection conn = null;
         List<User> list = new ArrayList<>();
-        try {
-            conn = getConn();
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM users");
+        try (Connection conn = getConn();
+             Statement st = conn.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM users")) {
             while (rs.next()) {
                 String name = rs.getString("name");
                 String login = rs.getString("login");
@@ -75,23 +82,13 @@ public class UserStore {
             }
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
         return list;
     }
 
     public void createUser(String nameUser, String loginUser, String emailUser) {
-        Connection conn = null;
-        try {
-            conn = getConn();
-            PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);");
+        try (Connection conn = getConn();
+             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, emailUser);
@@ -101,23 +98,13 @@ public class UserStore {
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
     public void updateUser(String loginForUp, String nameUser, String loginUser, String emailUser) {
-        Connection conn = null;
-        try {
-            conn = getConn();
-            PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
-                    + "login = ?, email = ?, createDate = ? WHERE login = ?");
+        try (Connection conn = getConn();
+             PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
+                     + "login = ?, email = ?, createDate = ? WHERE login = ?")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, emailUser);
@@ -127,42 +114,17 @@ public class UserStore {
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
     }
 
     public void deleteUser(String loginUser) {
-        Connection conn = null;
-
-        try {
-            conn = getConn();
-            PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?");
+        try (Connection conn = getConn();
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?")) {
             pst.setString(1, loginUser);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
-                }
-            }
         }
-    }
-
-    public static void main(String[] args) {
-        UserStore userStore = new UserStore();
-        userStore.createUser("a", "d", "f");
-        System.out.println(userStore.getAllUsers());
     }
 }
 
