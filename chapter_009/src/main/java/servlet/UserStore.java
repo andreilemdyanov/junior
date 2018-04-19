@@ -24,10 +24,8 @@ import java.util.List;
 public enum UserStore {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(UserStore.class);
-    private Connection conn;
 
     UserStore() {
-        conn = getConn();
     }
 
     private Connection getConn() {
@@ -61,7 +59,8 @@ public enum UserStore {
         p.setRemoveAbandoned(true);
         p.setJdbcInterceptors(
                 "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;"
-                        + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
+                        + "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;"
+                        + "org.apache.tomcat.jdbc.pool.interceptor.ResetAbandonedTimer");
         DataSource datasource = new DataSource();
         datasource.setPoolProperties(p);
 
@@ -79,7 +78,8 @@ public enum UserStore {
 
     public void createTable() {
         try
-                (Statement stat = conn.createStatement()) {
+                (Connection conn = INSTANCE.getConn();
+                 Statement stat = conn.createStatement()) {
             String command = "CREATE TABLE IF NOT EXISTS users("
                     + " id SERIAL PRIMARY KEY,"
                     + " name VARCHAR(100) NOT NULL ,"
@@ -95,7 +95,8 @@ public enum UserStore {
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        try (Statement st = conn.createStatement();
+        try (Connection conn = INSTANCE.getConn();
+             Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM users")) {
             while (rs.next()) {
                 String name = rs.getString("name");
@@ -113,7 +114,8 @@ public enum UserStore {
     }
 
     public void createUser(String nameUser, String loginUser, String emailUser) {
-        try (PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);")) {
+        try (Connection conn = INSTANCE.getConn();
+             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, emailUser);
@@ -127,8 +129,9 @@ public enum UserStore {
     }
 
     public void updateUser(String loginForUp, String nameUser, String loginUser, String emailUser) {
-        try (PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
-                + "login = ?, email = ?, createDate = ? WHERE login = ?")) {
+        try (Connection conn = INSTANCE.getConn();
+             PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
+                     + "login = ?, email = ?, createDate = ? WHERE login = ?")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, emailUser);
@@ -142,7 +145,8 @@ public enum UserStore {
     }
 
     public void deleteUser(String loginUser) {
-        try (PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?")) {
+        try (Connection conn = INSTANCE.getConn();
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?")) {
             pst.setString(1, loginUser);
             pst.executeUpdate();
         } catch (SQLException e) {

@@ -53,7 +53,6 @@ public class CreateServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        users.createTable();
         users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
         PrintWriter writer = new PrintWriter(resp.getOutputStream());
         writer.append("<!DOCTYPE html>"
