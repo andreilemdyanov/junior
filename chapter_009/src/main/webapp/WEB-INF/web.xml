@@ -26,6 +26,18 @@
         <servlet-name>UpdateServlet</servlet-name>
         <servlet-class>servlet.UpdateServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CreateServletJSP</servlet-name>
+        <servlet-class>jsp.CreateServletJSP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteServletJSP</servlet-name>
+        <servlet-class>jsp.DeleteServletJSP</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateServletJSP</servlet-name>
+        <servlet-class>jsp.UpdateServletJSP</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
         <url-pattern>/echo</url-pattern>
@@ -49,5 +61,17 @@
     <servlet-mapping>
         <servlet-name>ReturnServlet</servlet-name>
         <url-pattern>/list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CreateServletJSP</servlet-name>
+        <url-pattern>/createJSP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteServletJSP</servlet-name>
+        <url-pattern>/deleteJSP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateServletJSP</servlet-name>
+        <url-pattern>/editJSP</url-pattern>
     </servlet-mapping>
 </web-app>
