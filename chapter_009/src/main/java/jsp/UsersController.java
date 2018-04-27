@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Class CreateServletJSP.
+ * Class UsersController.
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
  * @since 21.04.2018
  */
-public class CreateServletJSP extends HttpServlet {
+public class UsersController extends HttpServlet {
     private UserStore users;
 
     @Override
@@ -23,9 +23,15 @@ public class CreateServletJSP extends HttpServlet {
     }
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("users", users.getAllUsers());
+        req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
-        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

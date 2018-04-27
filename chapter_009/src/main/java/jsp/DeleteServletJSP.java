@@ -20,13 +20,12 @@ public class DeleteServletJSP extends HttpServlet {
     @Override
     public void init() throws ServletException {
         users = UserStore.INSTANCE;
-        users.createTable();
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         users.deleteUser(req.getParameter("loginForDelete"));
-        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

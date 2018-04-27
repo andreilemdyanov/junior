@@ -19,13 +19,17 @@ public class UpdateServletJSP extends HttpServlet {
     @Override
     public void init() throws ServletException {
         users = UserStore.INSTANCE;
-        users.createTable();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/views/UserUpdate.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
         users.updateUser(req.getParameter("loginForUp"), req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
-        resp.sendRedirect(String.format("%s/index.jsp", req.getContextPath()));
+        resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

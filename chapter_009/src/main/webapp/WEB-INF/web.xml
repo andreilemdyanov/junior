@@ -27,8 +27,8 @@
         <servlet-class>servlet.UpdateServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CreateServletJSP</servlet-name>
-        <servlet-class>jsp.CreateServletJSP</servlet-class>
+        <servlet-name>Users Controller Servlet</servlet-name>
+        <servlet-class>jsp.UsersController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DeleteServletJSP</servlet-name>
@@ -63,8 +63,8 @@
         <url-pattern>/list</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CreateServletJSP</servlet-name>
-        <url-pattern>/createJSP</url-pattern>
+        <servlet-name>Users Controller Servlet</servlet-name>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteServletJSP</servlet-name>

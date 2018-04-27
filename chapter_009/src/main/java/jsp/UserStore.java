@@ -6,7 +6,6 @@ import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -19,16 +18,18 @@ import java.util.List;
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 21.04.2018
+ * @since 19.04.2018
  */
 public enum UserStore {
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(UserStore.class);
+    private DataSource pool;
 
     UserStore() {
+        pool = createPool();
     }
 
-    private Connection getConn() {
+    private DataSource createPool() {
         Settings settings = new Settings();
         ClassLoader loader = Settings.class.getClassLoader();
         try (InputStream io = loader.getResourceAsStream("app.properties")) {
@@ -64,22 +65,22 @@ public enum UserStore {
         DataSource datasource = new DataSource();
         datasource.setPoolProperties(p);
 
+        return datasource;
+    }
 
+    public Connection getConn() {
         Connection conn = null;
         try {
-            conn = datasource.getConnection();
-
+            conn = pool.getConnection();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
-
         return conn;
     }
 
     public void createTable() {
-        try
-                (Connection conn = INSTANCE.getConn();
-                 Statement stat = conn.createStatement()) {
+        try (Connection conn = getConn();
+             Statement stat = conn.createStatement()) {
             String command = "CREATE TABLE IF NOT EXISTS users("
                     + " id SERIAL PRIMARY KEY,"
                     + " name VARCHAR(100) NOT NULL ,"
@@ -95,7 +96,7 @@ public enum UserStore {
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        try (Connection conn = INSTANCE.getConn();
+        try (Connection conn = getConn();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery("SELECT * FROM users")) {
             while (rs.next()) {
@@ -114,7 +115,7 @@ public enum UserStore {
     }
 
     public void createUser(String nameUser, String loginUser, String emailUser) {
-        try (Connection conn = INSTANCE.getConn();
+        try (Connection conn = getConn();
              PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
@@ -129,7 +130,7 @@ public enum UserStore {
     }
 
     public void updateUser(String loginForUp, String nameUser, String loginUser, String emailUser) {
-        try (Connection conn = INSTANCE.getConn();
+        try (Connection conn = getConn();
              PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
                      + "login = ?, email = ?, createDate = ? WHERE login = ?")) {
             pst.setString(1, nameUser);
@@ -145,7 +146,7 @@ public enum UserStore {
     }
 
     public void deleteUser(String loginUser) {
-        try (Connection conn = INSTANCE.getConn();
+        try (Connection conn = getConn();
              PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?")) {
             pst.setString(1, loginUser);
             pst.executeUpdate();
