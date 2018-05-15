@@ -18,9 +18,10 @@ import java.util.List;
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 19.04.2018
+ * @since 16.05.2018
  */
 public enum UserStore {
+
     INSTANCE;
     private static final Logger LOG = LoggerFactory.getLogger(UserStore.class);
     private DataSource pool;
@@ -81,13 +82,22 @@ public enum UserStore {
     public void createTable() {
         try (Connection conn = getConn();
              Statement stat = conn.createStatement()) {
+            String command1 = "CREATE TABLE IF NOT EXISTS roles("
+                    + " id SERIAL PRIMARY KEY,"
+                    + " name VARCHAR(100) NOT NULL UNIQUE"
+                    + ");";
             String command = "CREATE TABLE IF NOT EXISTS users("
                     + " id SERIAL PRIMARY KEY,"
-                    + " name VARCHAR(100) NOT NULL ,"
-                    + " login VARCHAR(1000)  NOT NULL ,"
-                    + " email VARCHAR(1000)  NOT NULL ,"
-                    + " createDate TIMESTAMP"
+                    + " name VARCHAR(100) NOT NULL,"
+                    + " login VARCHAR(1000)  NOT NULL UNIQUE,"
+                    + " password VARCHAR(100) NOT NULL,"
+                    + " email VARCHAR(1000)  NOT NULL,"
+                    + " createDate TIMESTAMP,"
+                    + " role_id INT NOT NULL,"
+                    + " CONSTRAINT roles_id_fk"
+                    + " FOREIGN KEY (role_id) REFERENCES roles (id)"
                     + ");";
+            stat.executeUpdate(command1);
             stat.executeUpdate(command);
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
@@ -98,14 +108,17 @@ public enum UserStore {
         List<User> list = new ArrayList<>();
         try (Connection conn = getConn();
              Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT * FROM users")) {
+             ResultSet rs = st.executeQuery("SELECT u.id, u.name, u.login, u.password, u.email, u.createDate, u.role_id, r.name AS role_name FROM users AS u JOIN roles AS r ON u.role_id = r.id")) {
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
                 String login = rs.getString("login");
+                String password = rs.getString("password");
                 String email = rs.getString("email");
                 Calendar createDate = Calendar.getInstance();
-                createDate.setTimeInMillis(rs.getTimestamp("createDate").getTime());
-                User user = new User(name, login, email, createDate);
+                createDate.setTimeInMillis(rs.getTimestamp("createdate").getTime());
+                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
+                User user = new User(id, name, login, password, email, createDate, role);
                 list.add(user);
             }
         } catch (SQLException e) {
@@ -114,45 +127,83 @@ public enum UserStore {
         return list;
     }
 
-    public void createUser(String nameUser, String loginUser, String emailUser) {
+    public void createRoles() {
         try (Connection conn = getConn();
-             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, email, createDate) VALUES (?, ?, ?, ?);")) {
+             Statement st = conn.createStatement()) {
+            st.executeUpdate("INSERT INTO roles(name) VALUES ('ADMIN'), ('DEFAULT')");
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    public void createUser(String nameUser, String loginUser, String password, String emailUser, int role) {
+        try (Connection conn = getConn();
+             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, password, email, createDate, role_id) VALUES (?, ?, ?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
-            pst.setString(3, emailUser);
+            pst.setString(3, password);
+            pst.setString(4, emailUser);
             Calendar now = Calendar.getInstance();
             Timestamp t = new Timestamp(now.getTimeInMillis());
-            pst.setTimestamp(4, t);
+            pst.setTimestamp(5, t);
+            pst.setInt(6, role);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
-    public void updateUser(String loginForUp, String nameUser, String loginUser, String emailUser) {
+    public void updateRole(int id, int roleNumber) {
+        try (Connection conn = getConn();
+             PreparedStatement pst = conn.prepareStatement("UPDATE users SET role_id = ? WHERE id = ?;");) {
+            pst.setInt(1, roleNumber);
+            pst.setInt(2, id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
+    public void updateUser(int id, String nameUser, String loginUser, String password, String emailUser) {
         try (Connection conn = getConn();
              PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
-                     + "login = ?, email = ?, createDate = ? WHERE login = ?")) {
+                     + "login = ?, password = ?, email = ?, createDate = ? WHERE id = ?")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
-            pst.setString(3, emailUser);
+            pst.setString(3, password);
+            pst.setString(4, emailUser);
             Timestamp t = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            pst.setTimestamp(4, t);
-            pst.setString(5, loginForUp);
+            pst.setTimestamp(5, t);
+            pst.setInt(6, id);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
     }
 
-    public void deleteUser(String loginUser) {
+    public void deleteUser(int id) {
         try (Connection conn = getConn();
-             PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE login = ?")) {
-            pst.setString(1, loginUser);
+             PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
+            pst.setInt(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
         }
     }
+
+    public int isCredentional(String login, String password) {
+        int exists = 0;
+        for (User user : this.getAllUsers()) {
+            if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
+                if (user.getRole().getName().equals("ADMIN")) {
+                    exists = 1;
+                } else {
+                    exists = 2;
+                }
+            }
+        }
+        return exists;
+    }
+
 }
 

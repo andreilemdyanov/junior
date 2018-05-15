@@ -8,34 +8,25 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
- * Class UpdateServletJSP.
+ * Class SignoutController.
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
  * @since 16.05.2018
  */
-public class UpdateServletJSP extends HttpServlet {
-
-    private UserStore users;
-
-    @Override
-    public void init() throws ServletException {
-        users = UserStore.INSTANCE;
-    }
+public class SignoutController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/UserUpdate.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/LoginView.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("text/html");
-        users.updateUser(Integer.parseInt(req.getParameter("id")), req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"));
         HttpSession session = req.getSession();
         synchronized (session) {
-            session.setAttribute("login", req.getParameter("login"));
+            session.invalidate();
         }
-        resp.sendRedirect(String.format("%s/", req.getContextPath()));
+        resp.sendRedirect(String.format("%s", req.getContextPath()));
     }
 }

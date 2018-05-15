@@ -1,8 +1,37 @@
 <web-app>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>jsp.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Signin</servlet-name>
+        <servlet-class>jsp.SigninController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Signin</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Signout</servlet-name>
+        <servlet-class>jsp.SignoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Signout</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
         <servlet-class>lemdyanov.servlets.EchoServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>EchoServlet</servlet-name>
+        <url-pattern>/echo</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>UsersServlet</servlet-name>
         <http-method>DELETE</http-method>
@@ -10,68 +39,72 @@
         <servlet-class>protocol.UsersServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/users</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>CreateServlet</servlet-name>
         <servlet-class>servlet.CreateServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>CreateServlet</servlet-name>
+        <url-pattern>/create</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>DeleteServlet</servlet-name>
         <servlet-class>servlet.DeleteServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteServlet</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>ReturnServlet</servlet-name>
         <servlet-class>servlet.ReturnServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>ReturnServlet</servlet-name>
+        <url-pattern>/list</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>UpdateServlet</servlet-name>
         <servlet-class>servlet.UpdateServlet</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateServlet</servlet-name>
+        <url-pattern>/edit</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>Users Controller Servlet</servlet-name>
         <servlet-class>jsp.UsersController</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>Users Controller Servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>DeleteServletJSP</servlet-name>
         <servlet-class>jsp.DeleteServletJSP</servlet-class>
     </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteServletJSP</servlet-name>
+        <url-pattern>/deleteJSP</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>UpdateServletJSP</servlet-name>
         <servlet-class>jsp.UpdateServletJSP</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>EchoServlet</servlet-name>
-        <url-pattern>/echo</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UsersServlet</servlet-name>
-        <url-pattern>/users</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>CreateServlet</servlet-name>
-        <url-pattern>/create</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteServlet</servlet-name>
-        <url-pattern>/delete</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateServlet</servlet-name>
-        <url-pattern>/edit</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ReturnServlet</servlet-name>
-        <url-pattern>/list</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Users Controller Servlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteServletJSP</servlet-name>
-        <url-pattern>/deleteJSP</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>UpdateServletJSP</servlet-name>
         <url-pattern>/editJSP</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateRoleServlet</servlet-name>
+        <servlet-class>jsp.UpdateRoleServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateRoleServlet</servlet-name>
+        <url-pattern>/updateRole</url-pattern>
     </servlet-mapping>
 </web-app>

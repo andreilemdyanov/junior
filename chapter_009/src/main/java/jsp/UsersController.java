@@ -11,15 +11,20 @@ import java.io.IOException;
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 21.04.2018
+ * @since 16.05.2018
  */
 public class UsersController extends HttpServlet {
+
     private UserStore users;
 
     @Override
     public void init() throws ServletException {
         users = UserStore.INSTANCE;
         users.createTable();
+        users.createRoles();
+        users.createUser("root", "root", "root", "root", 2);
+        users.createUser("admin", "admin", "admin", "admin", 1);
+        users.createUser("some", "some", "some", "some", 2);
     }
 
     @Override
@@ -31,7 +36,7 @@ public class UsersController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("email"));
+        users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"), Integer.valueOf(req.getParameter("select")));
         resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

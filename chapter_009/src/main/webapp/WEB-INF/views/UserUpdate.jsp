@@ -10,10 +10,12 @@
     <input type="text" name="name"><br>
     New Login:
     <input type="text" name="login"><br>
+    New Password:
+    <input type="text" name="password"><br>
     New Email:
     <input type="text" name="email"><br>
     <center>
-        <button type="submit" name="loginForUp" value="${param.loginForUp}">Submit</button>
+        <button type="submit" name="id" value="${param.id}">Submit</button>
     </center>
 </form>
 </body>

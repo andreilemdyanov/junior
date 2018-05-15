@@ -11,7 +11,7 @@ import java.io.IOException;
  *
  * @author Andrey Lemdyanov {lemdyanov5@mail.ru)
  * @version $Id$
- * @since 21.04.2018
+ * @since 16.05.2018
  */
 public class DeleteServletJSP extends HttpServlet {
 
@@ -25,7 +25,7 @@ public class DeleteServletJSP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        users.deleteUser(req.getParameter("loginForDelete"));
+        users.deleteUser(Integer.parseInt(req.getParameter("id")));
         resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }
