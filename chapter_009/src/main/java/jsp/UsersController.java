@@ -17,14 +17,13 @@ public class UsersController extends HttpServlet {
 
     private UserStore users;
 
-    @Override
-    public void init() throws ServletException {
-        users = UserStore.INSTANCE;
-        users.createTable();
-        users.createRoles();
-        users.createUser("root", "root", "root", "root", 2);
-        users.createUser("admin", "admin", "admin", "admin", 1);
-        users.createUser("some", "some", "some", "some", 2);
+    public UserStore getUsers() {
+        return users;
+    }
+
+    public UsersController() {
+        this.users = UserStore.INSTANCE;
+
     }
 
     @Override

@@ -17,9 +17,12 @@ public class DeleteServletJSP extends HttpServlet {
 
     private UserStore users;
 
-    @Override
-    public void init() throws ServletException {
-        users = UserStore.INSTANCE;
+    public UserStore getUsers() {
+        return users;
+    }
+
+    public DeleteServletJSP() {
+        this.users = UserStore.INSTANCE;
     }
 
     @Override

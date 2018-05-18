@@ -16,6 +16,16 @@ import java.io.IOException;
  */
 public class SigninController extends HttpServlet {
 
+    private UserStore users;
+
+    public UserStore getUsers() {
+        return users;
+    }
+
+    public SigninController() {
+        this.users = UserStore.INSTANCE;
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/views/LoginView.jsp").forward(req, resp);
@@ -25,11 +35,11 @@ public class SigninController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        if (UserStore.INSTANCE.isCredentional(login, password) == 1 || UserStore.INSTANCE.isCredentional(login, password) == 2) {
+        if (users.isCredentional(login, password) == 1 || users.isCredentional(login, password) == 2) {
             HttpSession session = req.getSession();
             synchronized (session) {
                 session.setAttribute("login", login);
-                if (UserStore.INSTANCE.isCredentional(login, password) == 1) {
+                if (users.isCredentional(login, password) == 1) {
                     session.setAttribute("role", "ADMIN");
                 } else {
                     session.setAttribute("role", "DEFAULT");

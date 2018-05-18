@@ -205,5 +205,17 @@ public enum UserStore {
         return exists;
     }
 
+    public void dropTables() {
+        try (Connection conn = getConn();
+             Statement stat = conn.createStatement()) {
+            String command1 = "DROP TABLE users";
+            String command = "DROP TABLE roles";
+            stat.executeUpdate(command1);
+            stat.executeUpdate(command);
+        } catch (SQLException e) {
+            LOG.error(e.getMessage(), e);
+        }
+    }
+
 }
 

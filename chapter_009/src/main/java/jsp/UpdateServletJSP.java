@@ -18,9 +18,12 @@ public class UpdateServletJSP extends HttpServlet {
 
     private UserStore users;
 
-    @Override
-    public void init() throws ServletException {
-        users = UserStore.INSTANCE;
+    public UserStore getUsers() {
+        return users;
+    }
+
+    public UpdateServletJSP() {
+        this.users = UserStore.INSTANCE;
     }
 
     @Override
