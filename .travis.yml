@@ -6,7 +6,7 @@ services:
   
 before_script:
   - psql -c "CREATE DATABASE tracker;" -U postgres
-  - psql -c "CREATE DATABASE userStore;" -U postgres
+  - psql -c "CREATE DATABASE users;" -U postgres
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)
