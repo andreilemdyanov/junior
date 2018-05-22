@@ -10,3 +10,10 @@ before_script:
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+    email:
+      recipients:
+        - lemdyanov5@mail.ru
+      on_success: never # default: change
+      on_failure: always # default: always
