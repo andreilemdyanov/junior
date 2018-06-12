@@ -69,18 +69,8 @@ public enum UserStore {
         return datasource;
     }
 
-    public Connection getConn() {
-        Connection conn = null;
-        try {
-            conn = pool.getConnection();
-        } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
-        }
-        return conn;
-    }
-
     public void createTable() {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              Statement stat = conn.createStatement()) {
             String command1 = "CREATE TABLE IF NOT EXISTS roles("
                     + " id SERIAL PRIMARY KEY,"
@@ -106,7 +96,7 @@ public enum UserStore {
 
     public List<User> getAllUsers() {
         List<User> list = new ArrayList<>();
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              Statement st = conn.createStatement();
              ResultSet rs = st.executeQuery("SELECT u.id, u.name, u.login, u.password, u.email, u.createDate, u.role_id, r.name AS role_name FROM users AS u JOIN roles AS r ON u.role_id = r.id")) {
             while (rs.next()) {
@@ -128,7 +118,7 @@ public enum UserStore {
     }
 
     public void createRoles() {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              Statement st = conn.createStatement()) {
             st.executeUpdate("INSERT INTO roles(name) VALUES ('ADMIN'), ('DEFAULT')");
         } catch (SQLException e) {
@@ -137,7 +127,7 @@ public enum UserStore {
     }
 
     public void createUser(String nameUser, String loginUser, String password, String emailUser, int role) {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, password, email, createDate, role_id) VALUES (?, ?, ?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
@@ -154,7 +144,7 @@ public enum UserStore {
     }
 
     public void updateRole(int id, int roleNumber) {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              PreparedStatement pst = conn.prepareStatement("UPDATE users SET role_id = ? WHERE id = ?;");) {
             pst.setInt(1, roleNumber);
             pst.setInt(2, id);
@@ -165,7 +155,7 @@ public enum UserStore {
     }
 
     public void updateUser(int id, String nameUser, String loginUser, String password, String emailUser) {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
                      + "login = ?, password = ?, email = ?, createDate = ? WHERE id = ?")) {
             pst.setString(1, nameUser);
@@ -182,7 +172,7 @@ public enum UserStore {
     }
 
     public void deleteUser(int id) {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              PreparedStatement pst = conn.prepareStatement("DELETE FROM users WHERE id = ?")) {
             pst.setInt(1, id);
             pst.executeUpdate();
@@ -206,7 +196,7 @@ public enum UserStore {
     }
 
     public void dropTables() {
-        try (Connection conn = getConn();
+        try (Connection conn = pool.getConnection();
              Statement stat = conn.createStatement()) {
             String command1 = "DROP TABLE users";
             String command = "DROP TABLE roles";

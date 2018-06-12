@@ -36,9 +36,7 @@ public class UpdateServletJSP extends HttpServlet {
         resp.setContentType("text/html");
         users.updateUser(Integer.parseInt(req.getParameter("id")), req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"));
         HttpSession session = req.getSession();
-        synchronized (session) {
-            session.setAttribute("login", req.getParameter("login"));
-        }
+        session.setAttribute("login", req.getParameter("login"));
         resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

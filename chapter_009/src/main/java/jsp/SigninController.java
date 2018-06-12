@@ -37,14 +37,13 @@ public class SigninController extends HttpServlet {
         String password = req.getParameter("password");
         if (users.isCredentional(login, password) == 1 || users.isCredentional(login, password) == 2) {
             HttpSession session = req.getSession();
-            synchronized (session) {
-                session.setAttribute("login", login);
-                if (users.isCredentional(login, password) == 1) {
-                    session.setAttribute("role", "ADMIN");
-                } else {
-                    session.setAttribute("role", "DEFAULT");
-                }
+            session.setAttribute("login", login);
+            if (users.isCredentional(login, password) == 1) {
+                session.setAttribute("role", "ADMIN");
+            } else {
+                session.setAttribute("role", "DEFAULT");
             }
+
             resp.sendRedirect(String.format("%s", req.getContextPath()));
         } else {
             req.setAttribute("error", "Credentional invalid");

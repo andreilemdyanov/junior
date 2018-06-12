@@ -11,16 +11,13 @@ import java.util.Calendar;
  */
 public class User {
 
-    private int id;
-    private String name;
-    private String login;
-    private String password;
-    private String email;
-    private Calendar createDate;
-    private Role role;
-
-    public User() {
-    }
+    private final int id;
+    private final String name;
+    private final String login;
+    private final String password;
+    private final String email;
+    private final Calendar createDate;
+    private final Role role;
 
     public User(int id, String name, String login, String password, String email, Calendar createDate, Role role) {
         this.id = id;
