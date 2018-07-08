@@ -28,9 +28,9 @@ public class UpdateServletJSPTest {
         updateServlet.getUsers().dropTables();
         updateServlet.getUsers().createTable();
         updateServlet.getUsers().createRoles();
-        updateServlet.getUsers().createUser("root", "root", "root", "root", 2);
-        updateServlet.getUsers().createUser("admin", "admin", "admin", "admin", 1);
-        updateServlet.getUsers().createUser("some", "some", "some", "some", 2);
+        updateServlet.getUsers().createUser("root", "root", "root", "root", 2, "root", "root");
+        updateServlet.getUsers().createUser("admin", "admin", "admin", "admin", 1, "admin", "admin");
+        updateServlet.getUsers().createUser("some", "some", "some", "some", 2, "some", "some");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
@@ -41,6 +41,8 @@ public class UpdateServletJSPTest {
         when(request.getParameter("name")).thenReturn("UserUp");
         when(request.getParameter("password")).thenReturn("123");
         when(request.getParameter("email")).thenReturn("@boo");
+        when(request.getParameter("country")).thenReturn("Russia");
+        when(request.getParameter("city")).thenReturn("Moscow");
         when(request.getSession()).thenReturn(session);
 
         updateServlet.doPost(request, response);
@@ -51,6 +53,8 @@ public class UpdateServletJSPTest {
         assertThat(users.get(1).getName(), is("UserUp"));
         assertThat(users.get(1).getPassword(), is("123"));
         assertThat(users.get(1).getEmail(), is("@boo"));
+        assertThat(users.get(1).getCountry(), is("Russia"));
+        assertThat(users.get(1).getCity(), is("Moscow"));
 
     }
 }

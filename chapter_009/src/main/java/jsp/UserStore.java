@@ -85,7 +85,9 @@ public enum UserStore {
                     + " createDate TIMESTAMP,"
                     + " role_id INT NOT NULL,"
                     + " CONSTRAINT roles_id_fk"
-                    + " FOREIGN KEY (role_id) REFERENCES roles (id)"
+                    + " FOREIGN KEY (role_id) REFERENCES roles (id),"
+                    + " country VARCHAR(100) NOT NULL,"
+                    + " city VARCHAR(100) NOT NULL "
                     + ");";
             stat.executeUpdate(command1);
             stat.executeUpdate(command);
@@ -98,7 +100,7 @@ public enum UserStore {
         List<User> list = new ArrayList<>();
         try (Connection conn = pool.getConnection();
              Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery("SELECT u.id, u.name, u.login, u.password, u.email, u.createDate, u.role_id, r.name AS role_name FROM users AS u JOIN roles AS r ON u.role_id = r.id")) {
+             ResultSet rs = st.executeQuery("SELECT u.id, u.name, u.login, u.password, u.email, u.createDate, u.role_id, u.country, u.city, r.name AS role_name FROM users AS u JOIN roles AS r ON u.role_id = r.id")) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
@@ -108,7 +110,19 @@ public enum UserStore {
                 Calendar createDate = Calendar.getInstance();
                 createDate.setTimeInMillis(rs.getTimestamp("createdate").getTime());
                 Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
-                User user = new User(id, name, login, password, email, createDate, role);
+                String country = rs.getString("country");
+                String city = rs.getString("city");
+                User user = new User.Builder()
+                        .setNestedId(id)
+                        .setNestedName(name)
+                        .setNestedLogin(login)
+                        .setNestedPassword(password)
+                        .setNestedEmail(email)
+                        .setNestedCreateDate(createDate)
+                        .setNestedRole(role)
+                        .setNestedCountry(country)
+                        .setNestedCity(city)
+                        .build();
                 list.add(user);
             }
         } catch (SQLException e) {
@@ -126,9 +140,9 @@ public enum UserStore {
         }
     }
 
-    public void createUser(String nameUser, String loginUser, String password, String emailUser, int role) {
+    public void createUser(String nameUser, String loginUser, String password, String emailUser, int role, String country, String city) {
         try (Connection conn = pool.getConnection();
-             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, password, email, createDate, role_id) VALUES (?, ?, ?, ?, ?, ?);")) {
+             PreparedStatement pst = conn.prepareStatement("INSERT INTO users(name, login, password, email, createDate, role_id, country, city) VALUES (?, ?, ?, ?, ?, ?, ?, ?);")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, password);
@@ -137,6 +151,8 @@ public enum UserStore {
             Timestamp t = new Timestamp(now.getTimeInMillis());
             pst.setTimestamp(5, t);
             pst.setInt(6, role);
+            pst.setString(7, country);
+            pst.setString(8, city);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);
@@ -154,17 +170,19 @@ public enum UserStore {
         }
     }
 
-    public void updateUser(int id, String nameUser, String loginUser, String password, String emailUser) {
+    public void updateUser(int id, String nameUser, String loginUser, String password, String emailUser, String country, String city) {
         try (Connection conn = pool.getConnection();
              PreparedStatement pst = conn.prepareStatement("UPDATE users SET name = ?,"
-                     + "login = ?, password = ?, email = ?, createDate = ? WHERE id = ?")) {
+                     + "login = ?, password = ?, email = ?, createDate = ?, country = ?, city = ? WHERE id = ?")) {
             pst.setString(1, nameUser);
             pst.setString(2, loginUser);
             pst.setString(3, password);
             pst.setString(4, emailUser);
             Timestamp t = new Timestamp(Calendar.getInstance().getTimeInMillis());
             pst.setTimestamp(5, t);
-            pst.setInt(6, id);
+            pst.setString(6, country);
+            pst.setString(7, city);
+            pst.setInt(8, id);
             pst.executeUpdate();
         } catch (SQLException e) {
             LOG.error(e.getMessage(), e);

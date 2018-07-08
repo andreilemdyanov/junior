@@ -28,14 +28,34 @@ public class UsersController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.setAttribute("users", users.getAllUsers());
+
         req.getRequestDispatcher("/WEB-INF/views/UsersView.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"), Integer.valueOf(req.getParameter("select")));
+        boolean flag = false;
+        for (User user : users.getAllUsers()) {
+            if (req.getParameter("name").equals(user.getName()) && req.getParameter("login").equals(user.getLogin())) {
+                req.setAttribute("error", "Please, choose another name and login");
+                doGet(req, resp);
+                flag = true;
+            } else if (req.getParameter("name").equals(user.getName())) {
+                req.setAttribute("error", "Please, choose another name");
+                doGet(req, resp);
+                flag = true;
+            } else if (req.getParameter("login").equals(user.getLogin())) {
+                req.setAttribute("error", "Please, choose another login");
+                doGet(req, resp);
+                flag = true;
+            }
+        }
+        if (!flag) {
+            users.createUser(req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"), Integer.valueOf(req.getParameter("role")), req.getParameter("country"), req.getParameter("city"));
+        }
         resp.sendRedirect(String.format("%s/", req.getContextPath()));
     }
 }

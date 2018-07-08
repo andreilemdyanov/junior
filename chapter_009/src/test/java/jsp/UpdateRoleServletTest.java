@@ -29,9 +29,9 @@ public class UpdateRoleServletTest {
         updateRoleServlet.getUsers().dropTables();
         updateRoleServlet.getUsers().createTable();
         updateRoleServlet.getUsers().createRoles();
-        updateRoleServlet.getUsers().createUser("root", "root", "root", "root", 2);
-        updateRoleServlet.getUsers().createUser("admin", "admin", "admin", "admin", 1);
-        updateRoleServlet.getUsers().createUser("some", "some", "some", "some", 2);
+        updateRoleServlet.getUsers().createUser("root", "root", "root", "root", 2, "root", "root");
+        updateRoleServlet.getUsers().createUser("admin", "admin", "admin", "admin", 1, "admin", "admin");
+        updateRoleServlet.getUsers().createUser("some", "some", "some", "some", 2, "some", "some");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);

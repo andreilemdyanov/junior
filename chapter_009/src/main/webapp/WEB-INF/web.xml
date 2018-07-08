@@ -23,6 +23,14 @@
         <servlet-name>Signout</servlet-name>
         <url-pattern>/signout</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Json</servlet-name>
+        <servlet-class>jsp.JSONController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Json</servlet-name>
+        <url-pattern>/json</url-pattern>
+    </servlet-mapping>
 
     <servlet>
         <servlet-name>EchoServlet</servlet-name>

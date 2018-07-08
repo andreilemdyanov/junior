@@ -24,6 +24,11 @@ public class SigninController extends HttpServlet {
 
     public SigninController() {
         this.users = UserStore.INSTANCE;
+        users.dropTables();
+        users.createTable();
+        users.createRoles();
+        users.createUser("root", "root", "root", "root", 2, "Russia", "Moscow");
+        users.createUser("admin", "admin", "admin", "admin", 1, "USA", "Detroit");
     }
 
     @Override

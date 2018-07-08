@@ -26,7 +26,7 @@ public class DeleteServletJSPTest {
         deleteServlet.getUsers().dropTables();
         deleteServlet.getUsers().createTable();
         deleteServlet.getUsers().createRoles();
-        deleteServlet.getUsers().createUser("root", "root", "root", "root", 2);
+        deleteServlet.getUsers().createUser("root", "root", "root", "root", 2, "root", "root");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);

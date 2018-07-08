@@ -24,7 +24,7 @@ public class SigninControllerTest {
         signinController.getUsers().dropTables();
         signinController.getUsers().createTable();
         signinController.getUsers().createRoles();
-        signinController.getUsers().createUser("admin", "admin", "admin", "admin", 1);
+        signinController.getUsers().createUser("admin", "admin", "admin", "admin", 1, "admin", "admin");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);

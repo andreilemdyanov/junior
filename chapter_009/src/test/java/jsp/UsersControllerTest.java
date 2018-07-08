@@ -27,22 +27,23 @@ public class UsersControllerTest {
         controller.getUsers().dropTables();
         controller.getUsers().createTable();
         controller.getUsers().createRoles();
-        controller.getUsers().createUser("root", "root", "root", "root", 2);
-        controller.getUsers().createUser("admin", "admin", "admin", "admin", 1);
-        controller.getUsers().createUser("some", "some", "some", "some", 2);
+        controller.getUsers().createUser("root", "root", "root", "root", 2, "Russia", "Moscow");
+        controller.getUsers().createUser("admin", "admin", "admin", "admin", 1, "USA", "Detroit");
+        controller.getUsers().createUser("some", "some", "some", "some", 2, "Russia", "Piter");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         when(request.getParameter("login")).thenReturn("Andrei");
         when(request.getParameter("password")).thenReturn("pass");
-        when(request.getParameter("name")).thenReturn("some");
+        when(request.getParameter("name")).thenReturn("Bob");
         when(request.getParameter("email")).thenReturn("@mail");
-        when(request.getParameter("select")).thenReturn("2");
+        when(request.getParameter("role")).thenReturn("2");
+        when(request.getParameter("country")).thenReturn("Russia");
+        when(request.getParameter("city")).thenReturn("Moscow");
         controller.doPost(request, response);
 
         List<User> users = UserStore.INSTANCE.getAllUsers();
-
         assertThat(users.get(1).getLogin(), is("Andrei"));
     }
 }
