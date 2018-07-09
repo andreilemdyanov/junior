@@ -1,5 +1,7 @@
 package jsp;
 
+import lombok.Value;
+
 /**
  * Class Role
  *
@@ -7,26 +9,10 @@ package jsp;
  * @version $Id$
  * @since 16.05.2018
  */
+@Value
 public class Role {
 
-    private final int id;
-    private final String name;
+    private int id;
+    private String name;
 
-    public Role(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-    }
 }

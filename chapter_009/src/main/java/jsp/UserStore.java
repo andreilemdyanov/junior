@@ -1,10 +1,9 @@
 package jsp;
 
 import config.Settings;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +19,10 @@ import java.util.List;
  * @version $Id$
  * @since 16.05.2018
  */
+@Slf4j
 public enum UserStore {
 
     INSTANCE;
-    private static final Logger LOG = LoggerFactory.getLogger(UserStore.class);
     private DataSource pool;
 
     UserStore() {
@@ -36,7 +35,7 @@ public enum UserStore {
         try (InputStream io = loader.getResourceAsStream("app.properties")) {
             settings.load(io);
         } catch (IOException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
 
         PoolProperties p = new PoolProperties();
@@ -92,7 +91,7 @@ public enum UserStore {
             stat.executeUpdate(command1);
             stat.executeUpdate(command);
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -112,23 +111,60 @@ public enum UserStore {
                 Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
                 String country = rs.getString("country");
                 String city = rs.getString("city");
-                User user = new User.Builder()
-                        .setNestedId(id)
-                        .setNestedName(name)
-                        .setNestedLogin(login)
-                        .setNestedPassword(password)
-                        .setNestedEmail(email)
-                        .setNestedCreateDate(createDate)
-                        .setNestedRole(role)
-                        .setNestedCountry(country)
-                        .setNestedCity(city)
+                User user = new User.UserBuilder()
+                        .id(id)
+                        .name(name)
+                        .login(login)
+                        .password(password)
+                        .email(email)
+                        .createDate(createDate)
+                        .role(role)
+                        .country(country)
+                        .city(city)
                         .build();
                 list.add(user);
             }
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return list;
+    }
+
+    public User getUser(String name, String login) {
+        User user = null;
+        try (Connection conn = pool.getConnection();
+             PreparedStatement pst = conn.prepareStatement("SELECT u.id, u.name, u.login, u.password, u.email, u.createDate, u.role_id, u.country, u.city, r.name AS role_name FROM users AS u JOIN roles AS r ON u.role_id = r.id WHERE u.name = ? AND u.login = ? ")) {
+            pst.setString(1, name);
+            pst.setString(2, login);
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name1 = rs.getString("name");
+                String login1 = rs.getString("login");
+                String password = rs.getString("password");
+                String email = rs.getString("email");
+                Calendar createDate = Calendar.getInstance();
+                createDate.setTimeInMillis(rs.getTimestamp("createdate").getTime());
+                Role role = new Role(rs.getInt("role_id"), rs.getString("role_name"));
+                String country = rs.getString("country");
+                String city = rs.getString("city");
+                user = new User.UserBuilder()
+                        .id(id)
+                        .name(name1)
+                        .login(login1)
+                        .password(password)
+                        .email(email)
+                        .createDate(createDate)
+                        .role(role)
+                        .country(country)
+                        .city(city)
+                        .build();
+            }
+        } catch (SQLException e) {
+            log.error(e.getMessage(), e);
+        }
+        return user;
+
     }
 
     public void createRoles() {
@@ -136,7 +172,7 @@ public enum UserStore {
              Statement st = conn.createStatement()) {
             st.executeUpdate("INSERT INTO roles(name) VALUES ('ADMIN'), ('DEFAULT')");
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -155,7 +191,7 @@ public enum UserStore {
             pst.setString(8, city);
             pst.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -166,7 +202,7 @@ public enum UserStore {
             pst.setInt(2, id);
             pst.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -185,7 +221,7 @@ public enum UserStore {
             pst.setInt(8, id);
             pst.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -195,7 +231,7 @@ public enum UserStore {
             pst.setInt(1, id);
             pst.executeUpdate();
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -221,7 +257,7 @@ public enum UserStore {
             stat.executeUpdate(command1);
             stat.executeUpdate(command);
         } catch (SQLException e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 

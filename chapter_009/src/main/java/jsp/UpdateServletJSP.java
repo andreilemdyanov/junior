@@ -34,22 +34,12 @@ public class UpdateServletJSP extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-
         boolean flag = false;
-        for (User user : users.getAllUsers()) {
-            if (req.getParameter("name").equals(user.getName()) && req.getParameter("login").equals(user.getLogin())) {
-                req.setAttribute("error", "Please, choose another name and login");
-                doGet(req, resp);
-                flag = true;
-            } else if (req.getParameter("name").equals(user.getName())) {
-                req.setAttribute("error", "Please, choose another name");
-                doGet(req, resp);
-                flag = true;
-            } else if (req.getParameter("login").equals(user.getLogin())) {
-                req.setAttribute("error", "Please, choose another login");
-                doGet(req, resp);
-                flag = true;
-            }
+        User user = users.getUser(req.getParameter("name"), req.getParameter("login"));
+        if (user != null) {
+            req.setAttribute("error", "Please, choose another name and login");
+            doGet(req, resp);
+            flag = true;
         }
         if (!flag) {
             users.updateUser(Integer.parseInt(req.getParameter("id")), req.getParameter("name"), req.getParameter("login"), req.getParameter("password"), req.getParameter("email"), req.getParameter("country"), req.getParameter("city"));

@@ -1,7 +1,6 @@
 package config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.util.Properties;
@@ -13,8 +12,8 @@ import java.util.Properties;
  * @version $Id$
  * @since 17.04.2018
  */
+@Slf4j
 public class Settings {
-    private static final Logger LOG = LoggerFactory.getLogger(Settings.class);
 
     private final Properties prs = new Properties();
 
@@ -22,7 +21,7 @@ public class Settings {
         try {
             this.prs.load(io);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
