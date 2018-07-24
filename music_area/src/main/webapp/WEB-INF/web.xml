@@ -1,0 +1,82 @@
+<web-app>
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>servlets.AuthFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>Signin</servlet-name>
+        <servlet-class>servlets.SigninController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Signin</servlet-name>
+        <url-pattern>/signin</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Users Controller Servlet</servlet-name>
+        <servlet-class>servlets.UsersController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Users Controller Servlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Sign Out</servlet-name>
+        <servlet-class>servlets.SignoutController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Sign Out</servlet-name>
+        <url-pattern>/signout</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>Json Role</servlet-name>
+        <servlet-class>servlets.JsonRoleController</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Json Role</servlet-name>
+        <url-pattern>/jsonRole</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UpdateServlet</servlet-name>
+        <servlet-class>servlets.UpdateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateServlet</servlet-name>
+        <url-pattern>/edit</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DeleteServlet</servlet-name>
+        <servlet-class>servlets.DeleteServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteServlet</servlet-name>
+        <url-pattern>/delete</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>AddressFindServlet</servlet-name>
+        <servlet-class>servlets.AddressFindServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddressFindServlet</servlet-name>
+        <url-pattern>/adressFind</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>RoleFindServlet</servlet-name>
+        <servlet-class>servlets.RoleFindServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoleFindServlet</servlet-name>
+        <url-pattern>/roleFind</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>MusicTypeFindServlet</servlet-name>
+        <servlet-class>servlets.MusicTypesFindServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MusicTypeFindServlet</servlet-name>
+        <url-pattern>/musicFind</url-pattern>
+    </servlet-mapping>
+</web-app>
