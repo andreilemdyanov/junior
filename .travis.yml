@@ -8,6 +8,7 @@ before_script:
   - psql -c "CREATE DATABASE tracker;" -U postgres
   - psql -c "CREATE DATABASE user_store;" -U postgres
   - psql -c "CREATE DATABASE music_area;" -U postgres
+  - psql -c "CREATE DATABASE hibernate;" -U postgres
   
 after_success:
   - bash <(curl -s https://codecov.io/bash)

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax('items', {
+                method: "GET",
+                dataType: 'json',
+                error: function (message) {
+                    console.log(message);
+                },
+                success: function (result) {
+                    $(".resultList").empty();
+                    $(".resultList").append($("<table class='item' style=\"border: 1px solid black\" cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
+                        + "<tr>" + "<th>Id</th>" + "<th>Description</th>" + "<th>Time create</th>" + "<th>Status</th>" + "</tr>"));
+                    for (var i = 0; i != result.length; i++) {
+                        $(".item").append($("<tr class='table-data' id='" + result[i].id + "'>" + "<td>" + result[i].id + "</td>" + "<td>"
+                            + result[i].description + "</td>" + "<td>" + result[i].created + "</td>" + "<td class='show'>" + "</td>" + "</tr>"));
+                        var inp = document.createElement('input');
+                        inp.setAttribute('type', 'checkbox');
+                        inp.setAttribute('class', 'valid');
+                        if (result[i].done) {
+                            inp.setAttribute('checked', 'checked')
+                        }
+
+                        document.getElementById(result[i].id).getElementsByClassName("show")[0].appendChild(inp);
+                    }
+                    $(".resultList").append("</table>");
+                    $(".resultList").append($("</div>"));
+                }
+            })
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("button[name='create']").on("click", function () {
+                $.ajax({
+                    url: "items",
+                    method: "POST",
+                    data: {description: $("textarea[name='description']").val()},
+                    dataType: 'json',
+                    error: function (message) {
+                        console.log(message);
+                    },
+                    success: $.ajax('items', {
+                        method: "GET",
+                        dataType: 'json',
+                        error: function (message) {
+                            console.log(message);
+                        },
+                        success: function (result) {
+                            $("textarea[name='description']").val('');
+                            $(".resultList").empty();
+                            $(".resultList").append($("<table class='item' style=\"border: 1px solid black\" cellpadding=\"1\" cellspacing=\"1\" border=\"1\">"
+                                + "<tr>" + "<th>Id</th>" + "<th>Description</th>" + "<th>Time create</th>" + "<th>Status</th>" + "</tr>"));
+                            for (var i = 0; i != result.length; i++) {
+                                $(".item").append($("<tr class='table-data' id='" + result[i].id + "'>" + "<td>" + result[i].id + "</td>" + "<td>"
+                                    + result[i].description + "</td>" + "<td>" + result[i].created + "</td>" + "<td class='show'>" + "</td>" + "</tr>"));
+                                var inp = document.createElement('input');
+                                inp.setAttribute('type', 'checkbox');
+                                inp.setAttribute('class', 'valid');
+                                if (result[i].done) {
+                                    inp.setAttribute('checked', 'checked')
+                                }
+
+                                document.getElementById(result[i].id).getElementsByClassName("show")[0].appendChild(inp);
+                            }
+                            $(".resultList").append("</table>");
+                            $(".resultList").append($("</div>"));
+                        }
+                    })
+                })
+            })
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#Done").change(function () {
+                if ($("#Done").prop('checked')) {
+                    $(".table-data").each(function () {
+                        $(this).show();
+                    })
+                } else {
+                    $(".table-data").each(function () {
+                        if ($(this).find(".valid").prop('checked')) {
+                            $(this).hide();
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+</head>
+<body>
+
+<form method="post"
+      class="create">
+    <textarea name="description" placeholder="Description" cols="30" rows="4"></textarea><br>
+
+    <button type='button' name='create' class="but">Create Item</button>
+</form>
+<br>
+
+
+<input type="checkbox" id="Done" checked>
+<label for="Done">Show All</label>
+
+
+<div class="resultList"></div>
+
+</body>
+</html>
