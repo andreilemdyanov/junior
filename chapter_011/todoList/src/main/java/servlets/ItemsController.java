@@ -26,7 +26,7 @@ public class ItemsController extends HttpServlet {
     private ItemDao dao;
 
     public ItemsController() {
-        this.dao = new ItemDao();
+        this.dao = ItemDao.INSTANCE;
     }
 
     @Override

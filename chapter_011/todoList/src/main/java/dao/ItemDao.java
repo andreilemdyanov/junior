@@ -17,11 +17,18 @@ import java.util.function.Function;
  * @version $Id$
  * @since 21.08.2018
  */
-public class ItemDao {
-    private <T> T tx(final Function<Session, T> command) {
-        SessionFactory factory = new Configuration()
+public enum ItemDao {
+    INSTANCE;
+
+    private final SessionFactory factory;
+
+    ItemDao() {
+        factory = new Configuration()
                 .configure()
                 .buildSessionFactory();
+    }
+
+    private <T> T tx(final Function<Session, T> command) {
         final Session session = factory.openSession();
         final Transaction tx = session.beginTransaction();
         try {
