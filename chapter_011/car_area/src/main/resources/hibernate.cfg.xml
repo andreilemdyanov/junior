@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-configuration>
+    <session-factory>
+        <property name="connection.driver_class">org.postgresql.Driver</property>
+        <property name="connection.url">jdbc:postgresql://localhost:5432/car_area_xml</property>
+        <property name="connection.username">postgres</property>
+        <property name="connection.password">gh38Jo</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="show_sql">true</property>
+        <mapping resource="models/Body.hbm.xml"/>
+        <mapping resource="models/Car.hbm.xml"/>
+        <mapping resource="models/Engine.hbm.xml"/>
+        <mapping resource="models/Gearbox.hbm.xml"/>
+
+    </session-factory>
+</hibernate-configuration>

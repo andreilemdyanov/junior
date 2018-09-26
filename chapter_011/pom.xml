@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>todoList</module>
+        <module>car_area</module>
     </modules>
 
     <dependencies>
