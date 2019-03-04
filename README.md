@@ -2,4 +2,4 @@
 [![codecov](https://codecov.io/gh/andreilemdyanov/junior/branch/master/graph/badge.svg)](https://codecov.io/gh/andreilemdyanov/junior)
 
 Проект http://job4j.ru/
-Цель - трудоустройство Java-программистом. Планирую достичь до конца 2017 года.
+Цель - трудоустройство Java-программистом.
